@@ -1,8 +1,8 @@
 pipeline "post_message" {
 
   param "slack_token" {
-    type = string
-    // default = var.slack_token // TODO: This is not implemented yet, check later!
+    type    = string
+    default = var.slack_token
   }
 
   param "message" {
@@ -21,9 +21,8 @@ pipeline "post_message" {
     method = "post"
 
     request_headers = {
-      Content-Type = "application/json"
-      // Authorization = "Bearer ${param.slack_token}" // TODO: Use param when variables are accepted.
-      Authorization = "Bearer ${var.slack_token}"
+      Content-Type  = "application/json"
+      Authorization = "Bearer ${param.slack_token}"
     }
 
     request_body = jsonencode({
