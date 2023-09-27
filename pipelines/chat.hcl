@@ -5,15 +5,14 @@ pipeline "post_message" {
     default = var.slack_token
   }
 
-  param "message" {
+  param "slack_message" {
     type    = string
-    default = "Hello from flowpipe pipeline post_message"
+    default = var.slack_message
   }
 
-  param "channel" {
+  param "slack_channel_name" {
     type = string
-    // default = "ABCD0XYZ1" // using channel ID works
-    default = "random" // using channel name also works
+    default = var.slack_channel_name
   }
 
   step "http" "post_message" {
@@ -26,8 +25,8 @@ pipeline "post_message" {
     }
 
     request_body = jsonencode({
-      channel = "${param.channel}"
-      text    = "${param.message}"
+      channel = "${param.slack_channel_name}"
+      text    = "${param.slack_message}"
     })
   }
 
