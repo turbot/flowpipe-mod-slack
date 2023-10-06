@@ -11,7 +11,7 @@ pipeline "post_message" {
   }
 
   param "slack_channel_name" {
-    type = string
+    type    = string
     default = var.slack_channel_name
   }
 
@@ -25,8 +25,10 @@ pipeline "post_message" {
     }
 
     request_body = jsonencode({
-      channel = "${param.slack_channel_name}"
-      text    = "${param.slack_message}"
+      channel      = "${param.slack_channel_name}"
+      text         = "${param.slack_message}"
+      unfurl_links = false
+      unfurl_media = false
     })
   }
 
