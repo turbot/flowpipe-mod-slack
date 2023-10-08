@@ -10,7 +10,7 @@ variable "slack_channel_name" {
   default = "test-build-slack-room"
 }
 
-variable "message" {
+variable "slack_message" {
   description = "Text message to send to the slack channel."
   type = string
   default = "Hello from Flowpipe slack mod"
