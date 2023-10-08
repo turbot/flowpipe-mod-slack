@@ -1,4 +1,5 @@
 pipeline "post_message" {
+  description = "Send a message to a channel."
 
   param "slack_token" {
     type    = string
