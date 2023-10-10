@@ -1,14 +1,14 @@
-pipeline "post_message" {
+pipeline "chat_post_message" {
   description = "Send a message to a channel."
 
-  param "slack_token" {
+  param "token" {
     type    = string
-    default = var.slack_token
+    default = var.token
   }
 
   param "message" {
     type    = string
-    default = var.message
+    default = "Test message from Flowpipe"
   }
 
   param "channel" {
@@ -16,13 +16,13 @@ pipeline "post_message" {
     default = var.channel
   }
 
-  step "http" "post_message" {
+  step "http" "chat_post_message" {
     url    = "https://slack.com/api/chat.postMessage"
     method = "post"
 
     request_headers = {
       Content-Type  = "application/json"
-      Authorization = "Bearer ${param.slack_token}"
+      Authorization = "Bearer ${param.token}"
     }
 
     request_body = jsonencode({
@@ -34,13 +34,13 @@ pipeline "post_message" {
   }
 
   output "response_body" {
-    value = step.http.post_message.response_body
+    value = step.http.chat_post_message.response_body
   }
   output "response_headers" {
-    value = step.http.post_message.response_headers
+    value = step.http.chat_post_message.response_headers
   }
   output "status_code" {
-    value = step.http.post_message.status_code
+    value = step.http.chat_post_message.status_code
   }
 
 }
