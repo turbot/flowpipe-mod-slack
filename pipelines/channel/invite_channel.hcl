@@ -11,11 +11,11 @@ pipeline "invite_channel" {
   }
 
   param "users" {
-    type    = list(string)
+    type = list(string)
   }
 
   step "http" "invite_channel" {
-    title = "Invite to a channel"
+    title  = "Invite to a channel"
     url    = "https://slack.com/api/conversations.invite"
     method = "post"
 
@@ -25,9 +25,8 @@ pipeline "invite_channel" {
     }
 
     request_body = jsonencode({
-      channel       = param.channel
-      users = param.users
-
+      channel = param.channel
+      users   = param.users
     })
   }
 

@@ -17,22 +17,22 @@ pipeline "post_message" {
   }
 
   param "unfurl_links" {
-    type = boolean
-    default = false
+    type    = boolean
+    default = true
   }
 
   param "unfurl_media" {
-    type = boolean
-    default = false
+    type    = boolean
+    default = true
   }
 
   param "thread_ts" {
-    type = string
+    type    = string
     default = ""
   }
 
   step "http" "post_message" {
-    title = "Post message"
+    title  = "Post message"
     url    = "https://slack.com/api/chat.postMessage"
     method = "post"
 
@@ -50,9 +50,9 @@ pipeline "post_message" {
     })
   }
 
-  output "ts" {
-    value = jsondecode(step.http.post_message.response_body).ts
-  }
+  // output "ts" {
+  //   value = jsondecode(step.http.post_message.response_body).ts
+  // }
   output "response_body" {
     value = step.http.post_message.response_body
   }

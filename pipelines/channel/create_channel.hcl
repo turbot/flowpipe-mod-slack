@@ -16,7 +16,7 @@ pipeline "create_channel" {
   }
 
   step "http" "create_channel" {
-    title = "Create channel"
+    title  = "Create channel"
     url    = "https://slack.com/api/conversations.create"
     method = "post"
 

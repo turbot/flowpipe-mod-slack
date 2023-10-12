@@ -7,7 +7,7 @@ pipeline "list_scheduled_messages" {
   }
 
   step "http" "list_scheduled_messages" {
-    title = "List scheduled messages"
+    title  = "List scheduled messages"
     url    = "https://slack.com/api/chat.scheduledMessages.list"
     method = "post"
 

@@ -21,17 +21,17 @@ pipeline "schedule_message" {
   }
 
   param "unfurl_links" {
-    type = boolean
+    type    = boolean
     default = false
   }
 
   param "unfurl_media" {
-    type = boolean
+    type    = boolean
     default = false
   }
 
   step "http" "schedule_message" {
-    title = "Scheduled a message"
+    title  = "Scheduled a message"
     url    = "https://slack.com/api/chat.scheduleMessage"
     method = "post"
 

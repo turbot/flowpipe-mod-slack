@@ -7,7 +7,7 @@ pipeline "list_users" {
   }
 
   step "http" "list_users" {
-    title = "List users"
+    title  = "List users"
     url    = "https://slack.com/api/users.list"
     method = "post"
 
@@ -15,12 +15,11 @@ pipeline "list_users" {
       Content-Type  = "application/json"
       Authorization = "Bearer ${param.token}"
     }
-
   }
 
   output "users" {
     description = "List of users"
-    value = jsondecode(step.http.list_users.response_body).members
+    value       = jsondecode(step.http.list_users.response_body).members
   }
   output "response_body" {
     value = step.http.list_users.response_body

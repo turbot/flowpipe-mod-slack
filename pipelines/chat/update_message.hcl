@@ -7,7 +7,7 @@ pipeline "update_message" {
   }
 
   param "ts" {
-    type    = string
+    type = string
     // default = "Timestamp of the message to be updated."
   }
 
@@ -17,7 +17,7 @@ pipeline "update_message" {
   }
 
   step "http" "update_message" {
-    title = "Update a message"
+    title  = "Update a message"
     url    = "https://slack.com/api/chat.update"
     method = "post"
 
@@ -27,9 +27,9 @@ pipeline "update_message" {
     }
 
     request_body = jsonencode({
-      channel      = "${param.channel}"
-      text         = "new message goes here"
-      ts           = "${param.ts}"
+      channel = "${param.channel}"
+      text    = "new message goes here"
+      ts      = "${param.ts}"
     })
   }
 

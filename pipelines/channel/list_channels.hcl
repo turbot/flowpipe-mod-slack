@@ -7,7 +7,7 @@ pipeline "list_channels" {
   }
 
   step "http" "list_channels" {
-    title = "List channels"
+    title  = "List channels"
     url    = "https://slack.com/api/conversations.list"
     method = "post"
 
@@ -19,7 +19,7 @@ pipeline "list_channels" {
 
   output "channels" {
     description = "List of channels"
-    value = jsondecode(step.http.list_channels.response_body).channels
+    value       = jsondecode(step.http.list_channels.response_body).channels
   }
   output "response_body" {
     value = step.http.list_channels.response_body

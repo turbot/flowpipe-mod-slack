@@ -7,7 +7,7 @@ pipeline "delete_message" {
   }
 
   param "ts" {
-    type    = string
+    type = string
     // default = "Timestamp of the message to be updated."
   }
 
@@ -17,7 +17,7 @@ pipeline "delete_message" {
   }
 
   step "http" "delete_message" {
-    title = "Delete message"
+    title  = "Delete message"
     url    = "https://slack.com/api/chat.delete"
     method = "post"
 
@@ -27,8 +27,8 @@ pipeline "delete_message" {
     }
 
     request_body = jsonencode({
-      channel      = param.channel
-      ts           = param.ts
+      channel = param.channel
+      ts      = param.ts
     })
   }
 
