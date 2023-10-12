@@ -3,32 +3,38 @@ pipeline "post_message" {
 
   param "token" {
     type    = string
+    description = "Slack app token used to connect to the API."
     default = var.token
   }
 
   param "message" {
-    type    = string
-    default = "Test message from Flowpipe"
+    type        = string
+    description = "The formatted text of the message to be published."
+    default     = "Test message from Flowpipe"
   }
 
   param "channel" {
-    type    = string
-    default = var.channel
+    type        = string
+    description = "Channel containing the message to be updated."
+    default     = var.channel
   }
 
   param "unfurl_links" {
-    type    = boolean
-    default = true
+    type        = boolean
+    description = "Pass true to enable unfurling of primarily text-based content."
+    default     = true
   }
 
   param "unfurl_media" {
-    type    = boolean
-    default = true
+    type        = boolean
+    description = "Pass false to disable unfurling of media content."
+    default     = true
   }
 
   param "thread_ts" {
-    type    = string
-    default = ""
+    type        = string
+    description = "Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead."
+    optional    = true
   }
 
   step "http" "post_message" {
@@ -50,17 +56,8 @@ pipeline "post_message" {
     })
   }
 
-  // output "ts" {
-  //   value = jsondecode(step.http.post_message.response_body).ts
-  // }
-  output "response_body" {
-    value = step.http.post_message.response_body
-  }
-  output "response_headers" {
-    value = step.http.post_message.response_headers
-  }
-  output "status_code" {
-    value = step.http.post_message.status_code
+  output "ts" {
+    value = jsondecode(step.http.post_message.response_body).ts
   }
 
 }

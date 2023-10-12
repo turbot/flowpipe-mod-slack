@@ -2,18 +2,20 @@ pipeline "update_message" {
   description = "Update a message to a channel."
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   param "ts" {
-    type = string
-    // default = "Timestamp of the message to be updated."
+    type        = string
+    description = "Timestamp of the message to be updated."
   }
 
   param "channel" {
-    type    = string
-    default = var.channel // TODO: MUST be an ID
+    type        = string
+    description = "Channel containing the message to be updated."
+    default     = var.channel // TODO: MUST be an ID
   }
 
   step "http" "update_message" {
@@ -31,16 +33,6 @@ pipeline "update_message" {
       text    = "new message goes here"
       ts      = "${param.ts}"
     })
-  }
-
-  output "response_body" {
-    value = step.http.update_message.response_body
-  }
-  output "response_headers" {
-    value = step.http.update_message.response_headers
-  }
-  output "status_code" {
-    value = step.http.update_message.status_code
   }
 
 }

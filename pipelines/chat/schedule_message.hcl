@@ -2,32 +2,37 @@ pipeline "schedule_message" {
   description = "Send a message to a channel."
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   param "message" {
-    type    = string
-    default = "Test message from Flowpipe via schedule message"
+    type        = string
+    description = "The formatted text of the message to be published."
   }
 
   param "channel" {
-    type    = string
-    default = var.channel
+    type        = string
+    description = "Channel containing the message to be updated."
+    default     = var.channel
   }
 
   param "post_at" {
-    type = number // Unix EPOCH timestamp of time in future to send the message. Help: https://www.epochconverter.com/
+    type        = number // Unix EPOCH timestamp of time in future to send the message. Help: https://www.epochconverter.com/
+    description = "Unix EPOCH timestamp of time in future to send the message."
   }
 
   param "unfurl_links" {
-    type    = boolean
-    default = false
+    type        = boolean
+    description = "Pass true to enable unfurling of primarily text-based content."
+    default     = false
   }
 
   param "unfurl_media" {
-    type    = boolean
-    default = false
+    type        = boolean
+    description = "Pass false to disable unfurling of media content."
+    default     = false
   }
 
   step "http" "schedule_message" {
@@ -47,16 +52,6 @@ pipeline "schedule_message" {
       unfurl_links = "${param.unfurl_links}"
       unfurl_media = "${param.unfurl_media}"
     })
-  }
-
-  output "response_body" {
-    value = step.http.schedule_message.response_body
-  }
-  output "response_headers" {
-    value = step.http.schedule_message.response_headers
-  }
-  output "status_code" {
-    value = step.http.schedule_message.status_code
   }
 
 }

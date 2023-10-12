@@ -2,17 +2,20 @@ pipeline "create_channel" {
   description = "Create a slack channel."
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   param "channel" {
-    type = string
+    description = "Name of the public or private channel to create."
+    type        = string
   }
 
   param "is_private" {
-    type    = boolean
-    default = true
+    type        = boolean
+    description = "Create a private channel instead of a public one"
+    default     = true
   }
 
   step "http" "create_channel" {
@@ -30,16 +33,6 @@ pipeline "create_channel" {
       is_private = param.is_private
 
     })
-  }
-
-  output "response_body" {
-    value = step.http.create_channel.response_body
-  }
-  output "response_headers" {
-    value = step.http.create_channel.response_headers
-  }
-  output "status_code" {
-    value = step.http.create_channel.status_code
   }
 
 }

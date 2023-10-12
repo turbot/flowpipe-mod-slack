@@ -2,12 +2,14 @@ pipeline "open_conversation" {
   description = "Opens or resumes a direct message or multi-person direct message."
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   param "users" {
-    type = list(string)
+    type        = list(string)
+    description = "Comma separated lists of users. If only one user is included, this creates a 1:1 DM. The ordering of the users is preserved whenever a multi-person direct message is returned. Supply a channel when not supplying users."
   }
 
   step "http" "open_conversation" {
@@ -23,16 +25,6 @@ pipeline "open_conversation" {
     request_body = jsonencode({
       users = param.users
     })
-  }
-
-  output "response_body" {
-    value = step.http.open_conversation.response_body
-  }
-  output "response_headers" {
-    value = step.http.open_conversation.response_headers
-  }
-  output "status_code" {
-    value = step.http.open_conversation.status_code
   }
 
 }

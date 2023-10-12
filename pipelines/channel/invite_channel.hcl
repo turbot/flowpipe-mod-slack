@@ -2,16 +2,19 @@ pipeline "invite_channel" {
   description = "Invite user(s) to a slack channel."
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   param "channel" {
-    type = string
+    description = "The ID of the public or private channel to invite user(s) to."
+    type        = string
   }
 
   param "users" {
-    type = list(string)
+    type        = list(string)
+    description = "A comma separated list of user IDs. Up to 1000 users may be listed."
   }
 
   step "http" "invite_channel" {
@@ -28,16 +31,6 @@ pipeline "invite_channel" {
       channel = param.channel
       users   = param.users
     })
-  }
-
-  output "response_body" {
-    value = step.http.invite_channel.response_body
-  }
-  output "response_headers" {
-    value = step.http.invite_channel.response_headers
-  }
-  output "status_code" {
-    value = step.http.invite_channel.status_code
   }
 
 }

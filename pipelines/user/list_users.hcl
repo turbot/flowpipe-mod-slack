@@ -2,8 +2,9 @@ pipeline "list_users" {
   description = "List users in a Slack workspace."
 
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   step "http" "list_users" {
@@ -20,16 +21,6 @@ pipeline "list_users" {
   output "user_id" {
     description = "Filter a user using the user's email."
     value       = join("", [for user in jsondecode(step.http.list_users.response_body).members : user.id if uesr.email == "venu@turbot.com"])
-  }
-
-  output "response_body" {
-    value = step.http.list_users.response_body
-  }
-  output "response_headers" {
-    value = step.http.list_users.response_headers
-  }
-  output "status_code" {
-    value = step.http.list_users.status_code
   }
 
 }

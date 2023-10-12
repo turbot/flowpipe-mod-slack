@@ -1,12 +1,15 @@
 pipeline "get_user" {
   description = "Retrieve the current user's or bot's profile information, including their custom status."
+
   param "token" {
-    type    = string
-    default = var.token
+    type        = string
+    description = "Slack app token used to connect to the API."
+    default     = var.token
   }
 
   param "user" {
-    type = string
+    type        = string
+    description = "User to get info on"
   }
 
   step "http" "get_user" {
@@ -24,13 +27,4 @@ pipeline "get_user" {
 
   }
 
-  output "response_body" {
-    value = step.http.get_user.response_body
-  }
-  output "response_headers" {
-    value = step.http.get_user.response_headers
-  }
-  output "status_code" {
-    value = step.http.get_user.status_code
-  }
 }
