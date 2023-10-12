@@ -9,7 +9,7 @@ pipeline "list_users" {
   step "http" "list_users" {
     title  = "List users"
     url    = "https://slack.com/api/users.list"
-    method = "post"
+    method = "get"
 
     request_headers = {
       Content-Type  = "application/json"
@@ -17,10 +17,11 @@ pipeline "list_users" {
     }
   }
 
-  output "users" {
-    description = "List of users"
-    value       = jsondecode(step.http.list_users.response_body).members
+  output "user_id" {
+    description = "Filter a user using the user's email."
+    value       = join("", [for user in jsondecode(step.http.list_users.response_body).members : user.id if uesr.email == "venu@turbot.com"])
   }
+
   output "response_body" {
     value = step.http.list_users.response_body
   }
