@@ -1,4 +1,4 @@
-pipeline "post_message" {
+pipeline "chat_post_message" {
   description = "Send a message to a channel."
 
   param "token" {
@@ -37,7 +37,7 @@ pipeline "post_message" {
     optional    = true
   }
 
-  step "http" "post_message" {
+  step "http" "chat_post_message" {
     title  = "Post message"
     url    = "https://slack.com/api/chat.postMessage"
     method = "post"
@@ -57,7 +57,17 @@ pipeline "post_message" {
   }
 
   output "ts" {
-    value = jsondecode(step.http.post_message.response_body).ts
+    value = jsondecode(step.http.chat_post_message.response_body).ts
   }
 
+  output "response_body" {
+    value = step.http.chat_post_message.response_body
+  }
+  output "response_headers" {
+    value = step.http.chat_post_message.response_headers
+  }
+  output "status_code" {
+    value = step.http.chat_post_message.status_code
+  }
+  
 }
