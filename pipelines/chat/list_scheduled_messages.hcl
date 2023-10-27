@@ -1,14 +1,14 @@
 pipeline "list_scheduled_messages" {
-  description = "Send a message to a channel."
+  title       = "List Scheduled Messages"
+  description = "List of scheduled messages."
 
   param "token" {
     type        = string
-    description = "Slack app token used to connect to the API."
     default     = var.token
+    description = "Authentication token bearing required scopes."
   }
 
   step "http" "list_scheduled_messages" {
-    title  = "List scheduled messages"
     url    = "https://slack.com/api/chat.scheduledMessages.list"
     method = "post"
 
@@ -16,7 +16,10 @@ pipeline "list_scheduled_messages" {
       Content-Type  = "application/json"
       Authorization = "Bearer ${param.token}"
     }
-
   }
 
+  output "scheduled_messages" {
+    value       = step.http.list_scheduled_messages.response_body
+    description = "Scheduled messages details."
+  }
 }

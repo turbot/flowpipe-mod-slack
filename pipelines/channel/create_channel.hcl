@@ -1,25 +1,26 @@
+// usage: flowpipe pipeline run create_channel --pipeline-arg channel="test-channel"
 pipeline "create_channel" {
+  title       = "Create Channel"
   description = "Create a slack channel."
 
   param "token" {
     type        = string
-    description = "Slack app token used to connect to the API."
     default     = var.token
+    description = "Authentication token bearing required scopes."
   }
 
   param "channel" {
-    description = "Name of the public or private channel to create."
     type        = string
+    description = "Name of the public or private channel to create."
   }
 
   param "is_private" {
-    type        = boolean
-    description = "Create a private channel instead of a public one"
+    type        = bool
     default     = true
+    description = "Create a private channel instead of a public one"
   }
 
   step "http" "create_channel" {
-    title  = "Create channel"
     url    = "https://slack.com/api/conversations.create"
     method = "post"
 
@@ -31,8 +32,11 @@ pipeline "create_channel" {
     request_body = jsonencode({
       name       = param.channel
       is_private = param.is_private
-
     })
   }
 
+  output "channel" {
+    value       = step.http.create_channel.response_body
+    description = "Channel details."
+  }
 }

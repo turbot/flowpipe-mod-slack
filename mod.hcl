@@ -1,14 +1,14 @@
 mod "slack" {
-  title         = "Slack"
-  description   = "Run pipelines and triggers that interact with Slack."
+  title         = "Slack Library"
+  description   = "Run pipelines to supercharge your Slack workflows using Flowpipe."
   color         = "#7C2852"
   documentation = file("./docs/index.md")
   icon          = "/images/flowpipe/mods/turbot/slack.svg"
-  categories    = ["slack"]
+  categories    = ["slack", "library"]
 
   opengraph {
-    title       = "Slack"
-    description = "Run pipelines and triggers that interact with Slack."
+    title       = "Slack Library Mod for Flowpipe"
+    description = "Run pipelines to supercharge your Slack workflows using Flowpipe."
     image       = "/images/flowpipe/mods/turbot/slack-social-graphic.png"
   }
 }

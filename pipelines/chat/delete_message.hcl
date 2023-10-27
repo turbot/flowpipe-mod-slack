@@ -1,10 +1,18 @@
+// usage: flowpipe pipeline run delete_message --pipeline-arg ts="1698386187.334359" --pipeline-arg channel=CEFG8LMN9
 pipeline "delete_message" {
-  description = "Update a message to a channel."
+  title       = "Delete Message"
+  description = "Delete a message."
 
   param "token" {
     type        = string
-    description = "Slack app token used to connect to the API."
     default     = var.token
+    description = "Authentication token bearing required scopes."
+  }
+
+  param "channel" {
+    type        = string
+    default     = var.channel
+    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
   }
 
   param "ts" {
@@ -12,14 +20,7 @@ pipeline "delete_message" {
     description = "Timestamp of the message to be updated."
   }
 
-  param "channel" {
-    type        = string
-    description = "Channel containing the message to be updated."
-    default     = var.channel // TODO: MUST be an ID
-  }
-
   step "http" "delete_message" {
-    title  = "Delete message"
     url    = "https://slack.com/api/chat.delete"
     method = "post"
 
@@ -34,4 +35,8 @@ pipeline "delete_message" {
     })
   }
 
+  output "message" {
+    value       = step.http.delete_message.response_body
+    description = "Message details."
+  }
 }

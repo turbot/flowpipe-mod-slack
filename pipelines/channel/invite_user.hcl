@@ -1,15 +1,18 @@
-pipeline "invite_channel" {
+// usage: flowpipe pipeline run invite_user --pipeline-arg channel="C012ABCDXYZ" --pipeline-arg 'users=["UB1XY0ABC", "UGABCD1KL"]'
+pipeline "invite_user" {
+  title       = "Invite User"
   description = "Invite user(s) to a slack channel."
 
   param "token" {
     type        = string
-    description = "Slack app token used to connect to the API."
     default     = var.token
+    description = "Authentication token bearing required scopes."
   }
 
   param "channel" {
-    description = "The ID of the public or private channel to invite user(s) to."
     type        = string
+    default     = var.channel
+    description = "The ID of the public or private channel to invite user(s) to."
   }
 
   param "users" {
@@ -17,8 +20,7 @@ pipeline "invite_channel" {
     description = "A comma separated list of user IDs. Up to 1000 users may be listed."
   }
 
-  step "http" "invite_channel" {
-    title  = "Invite to a channel"
+  step "http" "invite_user" {
     url    = "https://slack.com/api/conversations.invite"
     method = "post"
 
@@ -33,4 +35,8 @@ pipeline "invite_channel" {
     })
   }
 
+  output "invitation" {
+    value       = step.http.invite_user.response_body
+    description = "Invitation details."
+  }
 }
