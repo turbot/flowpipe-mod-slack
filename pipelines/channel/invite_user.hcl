@@ -35,7 +35,7 @@ pipeline "invite_user" {
     })
   }
 
-  output "invitation" {
+  output "invite" {
     value       = step.http.invite_user.response_body
     description = "Invitation details."
   }
