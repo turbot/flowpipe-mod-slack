@@ -54,7 +54,7 @@ pipeline "schedule_message" {
     })
   }
 
-  output "scheduled_message" {
+  output "schedule_message" {
     value       = step.http.schedule_message.response_body
     description = "Scheduled message details."
   }

@@ -1,4 +1,4 @@
-// usage: flowpipe pipeline run test_schedule_message  --pipeline-arg message="Hello World from terminal, this runs after 30 seconds" --pipeline-arg "post_at=$(( $(date +%s) + 30 ))"
+// usage: flowpipe pipeline run test_schedule_message  --pipeline-arg message="Hello World from terminal, this runs after 120 seconds" --pipeline-arg "post_at=$(( $(date +%s) + 120 ))"
 pipeline "test_schedule_message" {
   title       = "Test Post Message"
   description = "Test the schedule_message pipeline."
@@ -36,11 +36,24 @@ pipeline "test_schedule_message" {
   }
 
   step "pipeline" "list_scheduled_messages" {
-    if = step.pipeline.schedule_message.scheduled_message.ok == true
+    if = step.pipeline.schedule_message.schedule_message.ok == true
 
     pipeline = pipeline.list_scheduled_messages
     args = {
       token = param.token
+    }
+  }
+
+  // Note: You cannot delete scheduled messages that have already been posted to Slack or that will be posted to Slack within 60 seconds of the delete request. 
+  // If attempted, this method will respond with an invalid_scheduled_message_id error.
+  step "pipeline" "delete_scheduled_message" {
+    if = step.pipeline.list_scheduled_messages.scheduled_messages.ok == true
+
+    pipeline = pipeline.delete_scheduled_message
+    args = {
+      token                = param.token
+      channel              = param.channel
+      scheduled_message_id = step.pipeline.schedule_message.schedule_message.scheduled_message_id
     }
   }
 
@@ -51,11 +64,16 @@ pipeline "test_schedule_message" {
 
   output "schedule_message" {
     description = "Check for pipeline.schedule_message."
-    value       = step.pipeline.schedule_message.scheduled_message.ok == true ? "succeeded" : "failed: ${step.pipeline.schedule_message.scheduled_message.error}"
+    value       = step.pipeline.schedule_message.schedule_message.ok == true ? "succeeded" : "failed: ${step.pipeline.schedule_message.schedule_message.error}"
   }
 
   output "list_scheduled_messages" {
     description = "Check for pipeline.list_scheduled_messages."
-    value       = step.pipeline.list_scheduled_messages.scheduled_messages.ok == true && length([for schedule in step.pipeline.list_scheduled_messages.scheduled_messages.scheduled_messages : schedule.id if schedule.id == step.pipeline.schedule_message.scheduled_message.scheduled_message_id]) > 0 ? "succeeded" : "failed: ${step.pipeline.list_scheduled_messages.scheduled_messages.error}"
+    value       = step.pipeline.list_scheduled_messages.scheduled_messages.ok == true && length([for schedule in step.pipeline.list_scheduled_messages.scheduled_messages.scheduled_messages : schedule.id if schedule.id == step.pipeline.schedule_message.schedule_message.scheduled_message_id]) > 0 ? "succeeded" : "failed: ${step.pipeline.list_scheduled_messages.scheduled_messages.error}"
+  }
+
+  output "delete_scheduled_message" {
+    description = "Check for pipeline.delete_scheduled_message."
+    value       = step.pipeline.delete_scheduled_message.delete_scheduled_message.ok == true ? "succeeded" : "failed: ${step.pipeline.delete_scheduled_message.delete_scheduled_message.error}"
   }
 }
