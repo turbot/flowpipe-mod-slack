@@ -1,6 +1,6 @@
 // usage: flowpipe pipeline run test_schedule_message  --pipeline-arg message="Hello World from terminal, this runs after 120 seconds" --pipeline-arg "post_at=$(( $(date +%s) + 120 ))"
 pipeline "test_schedule_message" {
-  title       = "Test Post Message"
+  title       = "Test Schedule Message"
   description = "Test the schedule_message pipeline."
 
   param "token" {

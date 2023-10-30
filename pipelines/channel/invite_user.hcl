@@ -1,7 +1,7 @@
 // usage: flowpipe pipeline run invite_user --pipeline-arg channel="C012ABCDXYZ" --pipeline-arg 'users=["UB1XY0ABC", "UGABCD1KL"]'
 pipeline "invite_user" {
   title       = "Invite User"
-  description = "Invite user(s) to a slack channel."
+  description = "Invite user(s) to a Slack channel."
 
   param "token" {
     type        = string
@@ -25,7 +25,7 @@ pipeline "invite_user" {
     method = "post"
 
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${param.token}"
     }
 

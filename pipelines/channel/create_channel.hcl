@@ -1,7 +1,7 @@
 // usage: flowpipe pipeline run create_channel --pipeline-arg channel="test-channel"
 pipeline "create_channel" {
   title       = "Create Channel"
-  description = "Create a slack channel."
+  description = "Create a Slack channel."
 
   param "token" {
     type        = string
@@ -25,7 +25,7 @@ pipeline "create_channel" {
     method = "post"
 
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${param.token}"
     }
 

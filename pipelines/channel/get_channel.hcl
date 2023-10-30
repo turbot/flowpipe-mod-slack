@@ -1,7 +1,7 @@
 // usage: flowpipe pipeline run get_channel --pipeline-arg channel="C012ABCDXYZ"
 pipeline "get_channel" {
-  title       = "Create Channel"
-  description = "Create a slack channel."
+  title       = "Get Channel"
+  description = "Get information about a Slack channel."
 
   param "token" {
     type        = string

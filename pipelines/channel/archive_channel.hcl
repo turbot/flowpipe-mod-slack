@@ -1,7 +1,7 @@
 // usage: flowpipe pipeline run archive_channel --pipeline-arg channel="C012ABCDXYZ"
 pipeline "archive_channel" {
   title       = "Archive Channel"
-  description = "Archives a slack channel."
+  description = "Archive a Slack channel."
 
   param "token" {
     type        = string
@@ -19,7 +19,7 @@ pipeline "archive_channel" {
     method = "post"
 
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${param.token}"
     }
 

@@ -25,7 +25,7 @@ pipeline "delete_message" {
     method = "post"
 
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${param.token}"
     }
 

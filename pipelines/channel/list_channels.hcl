@@ -32,7 +32,7 @@ pipeline "list_channels" {
     method = "get"
 
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${param.token}"
     }
 
@@ -47,7 +47,7 @@ pipeline "list_channels" {
     value       = step.http.list_channels.response_body
   }
 
-  output "channel_ID" {
+  output "channel_id" {
     description = "Get the Channel ID by name."
     value       = join("", [for channel in step.http.list_channels.response_body.channels : channel.id if channel.name == param.filter_channel_by_name])
   }
