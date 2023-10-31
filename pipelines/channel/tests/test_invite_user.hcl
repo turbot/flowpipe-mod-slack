@@ -85,21 +85,21 @@ pipeline "test_invite_user" {
 
   output "create_channel" {
     description = "Check for pipeline.create_channel."
-    value       = step.pipeline.create_channel.channel.ok == true ? "succeeded" : "failed: ${step.pipeline.create_channel.channel.error}"
+    value       = step.pipeline.create_channel.channel.ok == true ? "pass" : "fail: ${step.pipeline.create_channel.channel.error}"
   }
 
   output "get_channel" {
     description = "Check for pipeline.get_channel."
-    value       = step.pipeline.get_channel.channel.ok == true ? "succeeded" : "failed: ${step.pipeline.get_channel.channel.error}"
+    value       = step.pipeline.get_channel.channel.ok == true ? "pass" : "fail: ${step.pipeline.get_channel.channel.error}"
   }
 
   output "invite_user" {
     description = "Check for pipeline.invite_user."
-    value       = step.pipeline.invite_user.invite.ok == true ? "succeeded" : "failed: ${step.pipeline.invite_user.invite.error}"
+    value       = step.pipeline.invite_user.invite.ok == true ? "pass" : "fail: ${step.pipeline.invite_user.invite.error}"
   }
 
   output "archive_channel" {
     description = "Check for pipeline.archive_channel."
-    value       = step.pipeline.archive_channel.channel.ok == true ? "succeeded" : "failed: ${step.pipeline.archive_channel.channel.error}"
+    value       = step.pipeline.archive_channel.channel.ok == true ? "pass" : "fail: ${step.pipeline.archive_channel.channel.error}"
   }
 }

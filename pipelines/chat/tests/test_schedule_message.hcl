@@ -64,16 +64,16 @@ pipeline "test_schedule_message" {
 
   output "schedule_message" {
     description = "Check for pipeline.schedule_message."
-    value       = step.pipeline.schedule_message.schedule_message.ok == true ? "succeeded" : "failed: ${step.pipeline.schedule_message.schedule_message.error}"
+    value       = step.pipeline.schedule_message.schedule_message.ok == true ? "pass" : "fail: ${step.pipeline.schedule_message.schedule_message.error}"
   }
 
   output "list_scheduled_messages" {
     description = "Check for pipeline.list_scheduled_messages."
-    value       = step.pipeline.list_scheduled_messages.scheduled_messages.ok == true && length([for schedule in step.pipeline.list_scheduled_messages.scheduled_messages.scheduled_messages : schedule.id if schedule.id == step.pipeline.schedule_message.schedule_message.scheduled_message_id]) > 0 ? "succeeded" : "failed: ${step.pipeline.list_scheduled_messages.scheduled_messages.error}"
+    value       = step.pipeline.list_scheduled_messages.scheduled_messages.ok == true && length([for schedule in step.pipeline.list_scheduled_messages.scheduled_messages.scheduled_messages : schedule.id if schedule.id == step.pipeline.schedule_message.schedule_message.scheduled_message_id]) > 0 ? "pass" : "fail: ${step.pipeline.list_scheduled_messages.scheduled_messages.error}"
   }
 
   output "delete_scheduled_message" {
     description = "Check for pipeline.delete_scheduled_message."
-    value       = step.pipeline.delete_scheduled_message.delete_scheduled_message.ok == true ? "succeeded" : "failed: ${step.pipeline.delete_scheduled_message.delete_scheduled_message.error}"
+    value       = step.pipeline.delete_scheduled_message.delete_scheduled_message.ok == true ? "pass" : "fail: ${step.pipeline.delete_scheduled_message.delete_scheduled_message.error}"
   }
 }

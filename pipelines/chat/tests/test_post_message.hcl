@@ -47,11 +47,11 @@ pipeline "test_post_message" {
 
   output "post_message" {
     description = "Check for pipeline.post_message."
-    value       = step.pipeline.post_message.message.ok == true ? "succeeded" : "failed: ${step.pipeline.post_message.message.error}"
+    value       = step.pipeline.post_message.message.ok == true ? "pass" : "fail: ${step.pipeline.post_message.message.error}"
   }
 
   output "delete_message" {
     description = "Check for pipeline.delete_message."
-    value       = step.pipeline.delete_message.message.ok == true ? "succeeded" : "failed: ${step.pipeline.delete_message.message.error}"
+    value       = step.pipeline.delete_message.message.ok == true ? "pass" : "fail: ${step.pipeline.delete_message.message.error}"
   }
 }
