@@ -50,14 +50,14 @@ pipeline "post_message" {
     request_body = jsonencode({
       channel      = param.channel
       text         = param.message
+      thread_ts    = param.thread_ts
       unfurl_links = param.unfurl_links
       unfurl_media = param.unfurl_media
-      thread_ts    = param.thread_ts
     })
   }
 
   output "message" {
-    value       = step.http.post_message.response_body
+    value       = step.http.post_message.response_body.message
     description = "Message details."
   }
 }

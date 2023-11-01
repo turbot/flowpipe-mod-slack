@@ -1,5 +1,5 @@
 pipeline "get_user" {
-  title = "Get User"
+  title       = "Get User"
   description = "Retrieve the current user's or bot's profile information, including their custom status."
 
   param "token" {

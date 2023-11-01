@@ -27,7 +27,7 @@ pipeline "get_channel" {
   }
 
   output "channel" {
-    value       = step.http.get_channel.response_body
+    value       = step.http.get_channel.response_body.channel
     description = "Channel details."
   }
 }

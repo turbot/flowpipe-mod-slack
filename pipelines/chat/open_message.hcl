@@ -29,7 +29,7 @@ pipeline "open_message" {
   }
 
   output "message" {
-    value       = step.http.open_message.response_body
+    value       = step.http.open_message.response_body.channel
     description = "Message details."
   }
 }

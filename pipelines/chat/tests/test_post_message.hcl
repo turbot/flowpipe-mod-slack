@@ -11,6 +11,7 @@ pipeline "test_post_message" {
 
   param "message" {
     type        = string
+    default     = "Hello World from test_post_message pipeline."
     description = "The formatted text of the message to be published."
   }
 
@@ -30,13 +31,12 @@ pipeline "test_post_message" {
   }
 
   step "pipeline" "delete_message" {
-    if = step.pipeline.post_message.message.ok == true
-
+    if       = !is_error(step.pipeline.post_message)
     pipeline = pipeline.delete_message
     args = {
       token   = param.token
       channel = param.channel
-      ts      = step.pipeline.post_message.message.ts
+      ts      = step.pipeline.post_message.output.message.ts
     }
   }
 
@@ -47,11 +47,11 @@ pipeline "test_post_message" {
 
   output "post_message" {
     description = "Check for pipeline.post_message."
-    value       = step.pipeline.post_message.message.ok == true ? "pass" : "fail: ${step.pipeline.post_message.message.error}"
+    value       = !is_error(step.pipeline.post_message) ? "pass" : "fail: ${step.pipeline.post_message.errors}"
   }
 
   output "delete_message" {
     description = "Check for pipeline.delete_message."
-    value       = step.pipeline.delete_message.message.ok == true ? "pass" : "fail: ${step.pipeline.delete_message.message.error}"
+    value       = !is_error(step.pipeline.delete_message) ? "pass" : "fail: ${step.pipeline.delete_message.errors}"
   }
 }

@@ -33,9 +33,4 @@ pipeline "delete_scheduled_message" {
       scheduled_message_id = param.scheduled_message_id
     })
   }
-
-  output "delete_scheduled_message" {
-    value       = step.http.delete_scheduled_message.response_body
-    description = "Deletion details."
-  }
 }

@@ -23,17 +23,17 @@ pipeline "test_create_channel" {
   step "pipeline" "create_channel" {
     pipeline = pipeline.create_channel
     args = {
-      token      = param.token
       channel    = param.channel_to_create
       is_private = param.is_private
+      token      = param.token
     }
   }
 
   step "pipeline" "get_channel" {
-    if       = step.pipeline.create_channel.channel.ok == true
+    if       = !is_error(step.pipeline.create_channel)
     pipeline = pipeline.get_channel
     args = {
-      channel = step.pipeline.create_channel.channel.channel.id
+      channel = step.pipeline.create_channel.output.channel.id
     }
 
     # Ignore errors so we can delete
@@ -43,11 +43,11 @@ pipeline "test_create_channel" {
   }
 
   step "pipeline" "archive_channel" {
-    if = step.pipeline.create_channel.channel.ok == true
+    if = !is_error(step.pipeline.create_channel)
 
     pipeline = pipeline.archive_channel
     args = {
-      channel = step.pipeline.get_channel.channel.channel.id
+      channel = step.pipeline.create_channel.output.channel.id
     }
   }
 
@@ -58,16 +58,16 @@ pipeline "test_create_channel" {
 
   output "create_channel" {
     description = "Check for pipeline.create_channel."
-    value       = step.pipeline.create_channel.channel.ok == true ? "pass" : "fail: ${step.pipeline.create_channel.channel.error}"
+    value       = !is_error(step.pipeline.create_channel) ? "pass" : "fail: ${step.pipeline.create_channel.errors}"
   }
 
   output "get_channel" {
     description = "Check for pipeline.get_channel."
-    value       = step.pipeline.get_channel.channel.ok == true ? "pass" : "fail: ${step.pipeline.get_channel.channel.error}"
+    value       = !is_error(step.pipeline.get_channel) ? "pass" : "fail: ${step.pipeline.get_channel.errors}"
   }
 
   output "archive_channel" {
     description = "Check for pipeline.archive_channel."
-    value       = step.pipeline.archive_channel.channel.ok == true ? "pass" : "fail: ${step.pipeline.archive_channel.channel.error}"
+    value       = !is_error(step.pipeline.archive_channel) ? "pass" : "fail: ${step.pipeline.archive_channel.errors}"
   }
 }

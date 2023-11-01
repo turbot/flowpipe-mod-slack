@@ -47,8 +47,8 @@ pipeline "schedule_message" {
 
     request_body = jsonencode({
       channel      = param.channel
-      text         = param.message
       post_at      = param.post_at
+      text         = param.message
       unfurl_links = param.unfurl_links
       unfurl_media = param.unfurl_media
     })

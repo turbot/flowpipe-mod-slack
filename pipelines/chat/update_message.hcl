@@ -42,7 +42,7 @@ pipeline "update_message" {
   }
 
   output "message" {
-    value       = step.http.update_message.response_body
+    value       = step.http.update_message.response_body.message
     description = "Message details."
   }
 }

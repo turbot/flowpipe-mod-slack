@@ -27,9 +27,4 @@ pipeline "archive_channel" {
       channel = param.channel
     })
   }
-
-  output "channel" {
-    value       = step.http.archive_channel.response_body
-    description = "Channel details."
-  }
 }

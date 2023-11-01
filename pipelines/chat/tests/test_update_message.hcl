@@ -11,11 +11,13 @@ pipeline "test_update_message" {
 
   param "initial_message" {
     type        = string
+    default     = "Hello World from test_update_message pipeline."
     description = "The formatted text of the message to be published."
   }
 
   param "updated_message" {
     type        = string
+    default     = "Hello World from test_update_message pipeline - Updated."
     description = "The formatted text of the message to be published."
   }
 
@@ -28,20 +30,20 @@ pipeline "test_update_message" {
   step "pipeline" "post_message" {
     pipeline = pipeline.post_message
     args = {
-      token   = param.token
       channel = param.channel
       message = param.initial_message
+      token   = param.token
     }
   }
 
   step "pipeline" "update_message" {
-    if       = step.pipeline.post_message.message.ok == true
+    if       = !is_error(step.pipeline.post_message)
     pipeline = pipeline.update_message
     args = {
-      token   = param.token
       channel = param.channel
       message = param.updated_message
-      ts      = step.pipeline.post_message.message.ts
+      token   = param.token
+      ts      = step.pipeline.post_message.output.message.ts
     }
 
     # Ignore errors so we can delete
@@ -51,13 +53,14 @@ pipeline "test_update_message" {
   }
 
   step "pipeline" "delete_message" {
-    if = step.pipeline.update_message.message.ok == true
+    if         = !is_error(step.pipeline.post_message)
+    depends_on = [step.pipeline.update_message]
 
     pipeline = pipeline.delete_message
     args = {
       token   = param.token
       channel = param.channel
-      ts      = step.pipeline.update_message.message.ts
+      ts      = step.pipeline.post_message.output.message.ts
     }
   }
 
@@ -68,16 +71,16 @@ pipeline "test_update_message" {
 
   output "post_message" {
     description = "Check for pipeline.post_message."
-    value       = step.pipeline.post_message.message.ok == true ? "pass" : "fail: ${step.pipeline.post_message.message.error}"
+    value       = !is_error(step.pipeline.post_message) ? "pass" : "fail: ${step.pipeline.post_message.errors}"
   }
 
   output "update_message" {
     description = "Check for pipeline.update_message."
-    value       = step.pipeline.update_message.message.ok == true ? "pass" : "fail: ${step.pipeline.update_message.message.error}"
+    value       = !is_error(step.pipeline.update_message) ? "pass" : "fail: ${step.pipeline.update_message.errors}"
   }
 
   output "delete_message" {
     description = "Check for pipeline.delete_message."
-    value       = step.pipeline.delete_message.message.ok == true ? "pass" : "fail: ${step.pipeline.delete_message.message.error}"
+    value       = !is_error(step.pipeline.delete_message) ? "pass" : "fail: ${step.pipeline.delete_message.errors}"
   }
 }

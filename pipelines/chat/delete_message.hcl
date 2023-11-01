@@ -34,9 +34,4 @@ pipeline "delete_message" {
       ts      = param.ts
     })
   }
-
-  output "message" {
-    value       = step.http.delete_message.response_body
-    description = "Message details."
-  }
 }
