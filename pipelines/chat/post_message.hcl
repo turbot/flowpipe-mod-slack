@@ -1,6 +1,7 @@
-pipeline "schedule_message" {
-  title       = "Schedule Message"
-  description = "Schedule a message to be sent to a channel."
+// usage: flowpipe pipeline run post_message --pipeline-arg message="hello world"
+pipeline "post_message" {
+  title       = "Post Message"
+  description = "Post a message to a channel."
 
   param "token" {
     type        = string
@@ -16,12 +17,7 @@ pipeline "schedule_message" {
   param "channel" {
     type        = string
     default     = var.channel
-    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
-  }
-
-  param "post_at" {
-    type        = number // Unix EPOCH timestamp of time in future to send the message. Help: https://www.epochconverter.com/
-    description = "Unix EPOCH timestamp of time in future to send the message."
+    description = "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name."
   }
 
   param "unfurl_links" {
@@ -36,8 +32,14 @@ pipeline "schedule_message" {
     description = "Pass false to disable unfurling of media content."
   }
 
-  step "http" "schedule_message" {
-    url    = "https://slack.com/api/chat.scheduleMessage"
+  param "thread_ts" {
+    type        = string
+    optional    = true
+    description = "Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead."
+  }
+
+  step "http" "post_message" {
+    url    = "https://slack.com/api/chat.postMessage"
     method = "post"
 
     request_headers = {
@@ -47,15 +49,15 @@ pipeline "schedule_message" {
 
     request_body = jsonencode({
       channel      = param.channel
-      post_at      = param.post_at
       text         = param.message
+      thread_ts    = param.thread_ts
       unfurl_links = param.unfurl_links
       unfurl_media = param.unfurl_media
     })
   }
 
-  output "schedule_message" {
-    value       = step.http.schedule_message.response_body
-    description = "Scheduled message details."
+  output "message" {
+    value       = step.http.post_message.response_body.message
+    description = "Message details."
   }
 }

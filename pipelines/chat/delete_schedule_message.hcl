@@ -1,7 +1,6 @@
-// usage: flowpipe pipeline run delete_message --pipeline-arg ts="1698386187.334359" --pipeline-arg channel=CEFG8LMN9
-pipeline "delete_message" {
-  title       = "Delete Message"
-  description = "Delete a message."
+pipeline "delete_scheduled_message" {
+  title       = "Delete Scheduled Message"
+  description = "Delete a pending scheduled message from the queue."
 
   param "token" {
     type        = string
@@ -15,13 +14,13 @@ pipeline "delete_message" {
     description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
   }
 
-  param "ts" {
+  param "scheduled_message_id" {
     type        = string
-    description = "Timestamp of the message to be updated."
+    description = "scheduled_message_id returned from call to pipeline.schedule_message."
   }
 
-  step "http" "delete_message" {
-    url    = "https://slack.com/api/chat.delete"
+  step "http" "delete_scheduled_message" {
+    url    = "https://slack.com/api/chat.deleteScheduledMessage"
     method = "post"
 
     request_headers = {
@@ -30,8 +29,8 @@ pipeline "delete_message" {
     }
 
     request_body = jsonencode({
-      channel = param.channel
-      ts      = param.ts
+      channel              = param.channel
+      scheduled_message_id = param.scheduled_message_id
     })
   }
 }

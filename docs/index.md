@@ -48,7 +48,7 @@ flowpipe service start
 Run a pipeline:
 
 ```sh
-flowpipe pipeline run chat_post_message
+flowpipe pipeline run post_message
 ```
 
 ### Credentials
@@ -63,7 +63,7 @@ Pipelines have [input variables](https://flowpipe.io/docs/using-flowpipe/mod-var
 - Pass in a value on the command line:
 
   ```shell
-  flowpipe pipeline run chat_post_message --pipeline-arg token="xoxp-12345-67890"
+  flowpipe pipeline run post_message --pipeline-arg token="xoxp-12345-67890"
   ```
 
 These are only some of the ways you can set variables. For a full list, please see [Passing Input Variables](https://flowpipe.io/docs/using-flowpipe/mod-variables#passing-input-variables).
@@ -79,4 +79,4 @@ Please see the [contribution guidelines](https://github.com/turbot/flowpipe/blob
 Want to help but not sure where to start? Pick up one of the `help wanted` issues:
 
 - [Flowpipe](https://github.com/turbot/flowpipe/labels/help%20wanted)
-- [GitHub Mod](https://github.com/turbot/flowpipe-mod-slack/labels/help%20wanted)
+- [Slack Mod](https://github.com/turbot/flowpipe-mod-slack/labels/help%20wanted)

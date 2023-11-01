@@ -31,7 +31,7 @@ flowpipe service start
 Run a pipeline:
 
 ```sh
-flowpipe pipeline run chat_post_message
+flowpipe pipeline run post_message
 ```
 
 ### Credentials
@@ -46,7 +46,7 @@ Pipelines have [input variables](https://flowpipe.io/docs/using-flowpipe/mod-var
 - Pass in a value on the command line:
 
   ```shell
-  flowpipe pipeline run chat_post_message --pipeline-arg token="xoxp-12345-67890"
+  flowpipe pipeline run post_message --pipeline-arg token="xoxp-12345-67890"
   ```
 
 These are only some of the ways you can set variables. For a full list, please see [Passing Input Variables](https://flowpipe.io/docs/using-flowpipe/mod-variables#passing-input-variables).

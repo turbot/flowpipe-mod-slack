@@ -1,12 +1,11 @@
-// Get current user
-// usage: flowpipe pipeline run get_current_user
 pipeline "get_current_user" {
+  title       = "Get Current User Profile"
   description = "Retrieve the current user's or bot's profile information, including their custom status."
 
   param "token" {
     type        = string
-    description = "Slack app token used to connect to the API."
     default     = var.token
+    description = "Authentication token bearing required scopes."
   }
 
   step "http" "get_current_user" {
@@ -14,10 +13,13 @@ pipeline "get_current_user" {
     method = "get"
 
     request_headers = {
-      Content-Type  = "application/json"
+      Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${param.token}"
     }
-
   }
 
+  output "user" {
+    value       = step.http.get_current_user.response_body
+    description = "User profile details."
+  }
 }
