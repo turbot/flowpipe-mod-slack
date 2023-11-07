@@ -1,6 +1,23 @@
-# Slack Mod for Flowpipe
+---
+repository: "https://github.com/turbot/flowpipe-mod-slack"
+---
+
+# Flowpipe Slack Mod
 
 Run pipelines and use triggers for Slack resources.
+
+## References
+
+[Slack](https://slack.com/) is a messaging program designed specifically for the workplace.
+
+[Flowpipe](https://flowpipe.io) is an open source workflow tool.
+
+[Flowpipe Mods](https://flowpipe.io/docs/reference/mod-resources#mod) are collections of `pipelines` and `triggers`.
+
+## Documentation
+
+- **[Pipelines →](https://hub.flowpipe.io/mods/turbot/slack/pipelines)**
+- **[Triggers →](https://hub.flowpipe.io/mods/turbot/slack/triggers)**
 
 ## Getting started
 
