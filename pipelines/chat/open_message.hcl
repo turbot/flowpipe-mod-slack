@@ -6,7 +6,7 @@ pipeline "open_message" {
   param "token" {
     type        = string
     default     = var.token
-    description = "Authentication token bearing required scopes."
+    description = local.token_param_description
   }
 
   param "users" {

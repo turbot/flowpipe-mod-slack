@@ -6,7 +6,7 @@ pipeline "list_channels" {
   param "token" {
     type        = string
     default     = var.token
-    description = "Authentication token bearing required scopes."
+    description = local.token_param_description
   }
 
   param "filter_channel_by_name" {

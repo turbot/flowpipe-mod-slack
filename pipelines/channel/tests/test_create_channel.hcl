@@ -5,7 +5,7 @@ pipeline "test_create_channel" {
   param "token" {
     type        = string
     default     = var.token
-    description = "Authentication token bearing required scopes."
+    description = local.token_param_description
   }
 
   param "channel_to_create" {
