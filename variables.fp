@@ -4,7 +4,6 @@ variable "channel" {
   # TODO: Add once supported
   #sensitive  = true
   type        = string
-  default     = ""
 }
 
 variable "token" {
@@ -12,5 +11,4 @@ variable "token" {
   # TODO: Add once supported
   #sensitive  = true
   type        = string
-  default     = ""
 }
