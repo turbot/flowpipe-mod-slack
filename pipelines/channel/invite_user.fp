@@ -11,7 +11,6 @@ pipeline "invite_user" {
 
   param "channel" {
     type        = string
-    default     = var.channel
     description = "The ID of the public or private channel to invite user(s) to."
   }
 

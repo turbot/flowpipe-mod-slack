@@ -17,7 +17,6 @@ pipeline "test_post_message" {
 
   param "channel" {
     type        = string
-    default     = var.channel
     description = "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name."
   }
 
