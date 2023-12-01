@@ -3,10 +3,10 @@ pipeline "post_message" {
   title       = "Post Message"
   description = "Post a message to a channel."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = "Name for credentials to use. If not provided, the default credentials will be used."
+    default     = "default"
   }
 
   param "message" {
@@ -43,7 +43,7 @@ pipeline "post_message" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = jsonencode({
