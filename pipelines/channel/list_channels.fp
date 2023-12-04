@@ -31,8 +31,7 @@ pipeline "list_channels" {
     }
 
     request_body = jsonencode({
-      exclude_archived = param.exclude_archived
-      types            = param.types
+      for name, value in param : name => value if value != null
     })
 
     # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved

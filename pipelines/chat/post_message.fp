@@ -48,11 +48,7 @@ pipeline "post_message" {
     }
 
     request_body = jsonencode({
-      channel      = param.channel
-      text         = param.text
-      thread_ts    = param.thread_ts
-      unfurl_links = param.unfurl_links
-      unfurl_media = param.unfurl_media
+      for name, value in param : name => value if value != null
     })
 
     # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
