@@ -60,6 +60,6 @@ pipeline "post_message" {
 
   output "message" {
     description = "Message details."
-    value       = try(step.http.post_message.response_body.message, null)
+    value       = step.http.post_message.response_body.message
   }
 }
