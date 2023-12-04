@@ -8,10 +8,9 @@ pipeline "list_channels" {
     default     = "default"
   }
 
-  # TODO: Change to type list(string)
   param "types" {
-    type        = string
-    default     = "public_channel"
+    type        = list(string)
+    default     = ["public_channel"]
     description = "Mix and match channel types by providing a comma-separated list of any combination of public_channel, private_channel, mpim, im."
   }
 
@@ -21,6 +20,7 @@ pipeline "list_channels" {
     description = "Set to true to exclude archived channels from the list."
   }
 
+  # TODO: Add pagination support
   step "http" "list_channels" {
     url    = "https://slack.com/api/conversations.list"
     method = "get"
@@ -30,9 +30,12 @@ pipeline "list_channels" {
       Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
-    request_body = jsonencode({
-      for name, value in param : name => value if value != null
-    })
+    request_body = jsonencode(
+      merge(
+        { for name, value in param : name => value if value != null && !contains(["cred"], name) },
+        {types = join(",", param.types)},
+      )
+    )
 
     # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
     throw {
