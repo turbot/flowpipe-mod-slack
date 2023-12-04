@@ -1,24 +1,18 @@
-// usage: flowpipe pipeline run list_channels --pipeline-arg filter_channel_by_name="random"
 pipeline "list_channels" {
   title       = "List Channels"
   description = "Lists all channels in a Slack team."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = "Name for credentials to use. If not provided, the default credentials will be used."
+    default     = "default"
   }
 
-  param "filter_channel_by_name" {
-    type        = string
-    optional    = true
-    description = "Filter the channel by name to get the channel ID."
-  }
-
+  # TODO: Change to type list(string)
   param "types" {
     type        = string
     default     = "public_channel"
-    description = "Mix and match channel types by providing a comma-separated list of any combination of public_channel, private_channel, mpim, im"
+    description = "Mix and match channel types by providing a comma-separated list of any combination of public_channel, private_channel, mpim, im."
   }
 
   param "exclude_archived" {
@@ -33,22 +27,23 @@ pipeline "list_channels" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = jsonencode({
       exclude_archived = param.exclude_archived
       types            = param.types
     })
+
+    # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
+    throw {
+      if      = result.response_body.ok == false
+      message = try(result.response_body.error, "")
+    }
   }
 
   output "channels" {
-    description = "List of all channels."
-    value       = step.http.list_channels.response_body
-  }
-
-  output "channel_id" {
-    description = "Get the Channel ID by name."
-    value       = join("", [for channel in step.http.list_channels.response_body.channels : channel.id if channel.name == param.filter_channel_by_name])
+    description = "List of channel details."
+    value       = try(step.http.list_channels.response_body.channels, [])
   }
 }
