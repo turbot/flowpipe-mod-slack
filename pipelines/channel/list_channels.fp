@@ -33,7 +33,7 @@ pipeline "list_channels" {
     request_body = jsonencode(
       merge(
         { for name, value in param : name => value if value != null && !contains(["cred"], name) },
-        {types = join(",", param.types)},
+        { types = join(",", param.types) },
       )
     )
 
