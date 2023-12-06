@@ -1,4 +1,5 @@
-variable "token" {
-  description = "Slack app token used to authenticate to your Slack workspace."
+variable "default_cred" {
   type        = string
+  description = "Name for the default credentials."
+  default     = "default"
 }

@@ -1,33 +1,38 @@
-// usage: flowpipe pipeline run get_channel --pipeline-arg channel="C012ABCDXYZ"
 pipeline "get_channel" {
   title       = "Get Channel"
-  description = "Get information about a Slack channel."
+  description = "Retrieve information about a conversation."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = var.default_cred
   }
 
   param "channel" {
     type        = string
-    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
+    description = "Conversation ID to learn more about."
   }
 
   step "http" "get_channel" {
-    url    = "https://slack.com/api/conversations.info"
     method = "post"
+    url    = "https://slack.com/api/conversations.info"
 
     request_headers = {
       Content-Type  = "application/x-www-form-urlencoded"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = "channel=${param.channel}"
+
+    # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
+    throw {
+      if      = result.response_body.ok == false
+      message = try(result.response_body.error, "")
+    }
   }
 
   output "channel" {
+    description = "The conversation details."
     value       = step.http.get_channel.response_body.channel
-    description = "Channel details."
   }
 }

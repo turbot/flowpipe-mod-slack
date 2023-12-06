@@ -3,10 +3,10 @@ pipeline "test_update_message" {
   title       = "Test Update Message"
   description = "Test the update_message pipeline."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = var.default_cred
   }
 
   param "initial_message" {
@@ -31,7 +31,7 @@ pipeline "test_update_message" {
     args = {
       channel = param.channel
       message = param.initial_message
-      token   = param.token
+      cred    = param.cred
     }
   }
 
@@ -41,7 +41,7 @@ pipeline "test_update_message" {
     args = {
       channel = param.channel
       message = param.updated_message
-      token   = param.token
+      cred    = param.cred
       ts      = step.pipeline.post_message.output.message.ts
     }
 
@@ -57,7 +57,7 @@ pipeline "test_update_message" {
 
     pipeline = pipeline.delete_message
     args = {
-      token   = param.token
+      cred    = param.cred
       channel = param.channel
       ts      = step.pipeline.post_message.output.message.ts
     }

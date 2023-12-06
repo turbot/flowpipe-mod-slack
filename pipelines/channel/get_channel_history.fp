@@ -1,49 +1,49 @@
-// usage: flowpipe pipeline run get_channel_history --pipeline-arg channel="C012ABCDXYZ"
 pipeline "get_channel_history" {
   title       = "Get Channel History"
   description = "Fetches a conversation's history of messages and events."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = var.default_cred
   }
 
   param "channel" {
     type        = string
-    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
-  }
-
-  param "limit" {
-    type        = number
-    description = "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached."
-    default     = 100
+    description = "Conversation ID to fetch history for."
   }
 
   param "oldest" {
     type        = string
-    description = "Start of time range of messages to include in results."
+    description = "Only messages after this Unix timestamp will be included in results."
     default     = 0
   }
 
+  # TODO: Add pagination support once https://github.com/turbot/flowpipe/issues/339 is resolved
   step "http" "get_channel_history" {
-    url    = "https://slack.com/api/conversations.history"
     method = "post"
+    url    = "https://slack.com/api/conversations.history"
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = jsonencode({
       channel = param.channel
-      limit   = param.limit
       oldest  = param.oldest
+      limit   = 1000
     })
+
+    # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
+    throw {
+      if      = result.response_body.ok == false
+      message = try(result.response_body.error, "")
+    }
   }
 
-  output "channel_history" {
-    value       = step.http.get_channel_history.response_body.messages
-    description = "Channel history details."
+  output "messages" {
+    description = "Channel history."
+    value       = step.http.get_channel_history.messages
   }
 }
