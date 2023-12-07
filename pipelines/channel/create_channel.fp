@@ -39,10 +39,9 @@ pipeline "create_channel" {
       is_private = param.is_private
     })
 
-    # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
     throw {
       if      = result.response_body.ok == false
-      message = try(result.response_body.error, "")
+      message = result.response_body.error
     }
   }
 
