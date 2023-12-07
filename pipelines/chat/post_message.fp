@@ -2,6 +2,10 @@ pipeline "post_message" {
   title       = "Post Message"
   description = "Sends a message to a channel."
 
+  tags = {
+    type = "featured"
+  }
+
   param "cred" {
     type        = string
     description = local.cred_param_description

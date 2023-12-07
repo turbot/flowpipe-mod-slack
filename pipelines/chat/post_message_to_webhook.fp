@@ -2,6 +2,10 @@ pipeline "post_message_to_webhook" {
   title       = "Post Message"
   description = "Sends a message to a channel."
 
+  tags = {
+    type = "featured"
+  }
+
   param "text" {
     type        = string
     description = "The formatted text to describe the content of the message."

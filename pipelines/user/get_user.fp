@@ -2,6 +2,10 @@ pipeline "get_user" {
   title       = "Get User"
   description = "Retrieve a user's profile information, including their custom status."
 
+  tags = {
+    type = "featured"
+  }
+
   param "cred" {
     type        = string
     description = local.cred_param_description

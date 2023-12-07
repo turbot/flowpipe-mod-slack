@@ -2,6 +2,10 @@ pipeline "list_channels" {
   title       = "List Channels"
   description = "Lists all channels in a Slack team."
 
+  tags = {
+    type = "featured"
+  }
+
   param "cred" {
     type        = string
     description = local.cred_param_description
