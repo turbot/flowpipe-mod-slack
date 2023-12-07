@@ -1,17 +1,16 @@
-// usage: flowpipe pipeline run get_message_permalink --arg message_ts="1698385111.481129" --arg channel=CEFG8LMN9
 pipeline "get_message_permalink" {
   title       = "Get Message Permalink"
   description = "Retrieve a permalink URL for a specific extant message."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "channel" {
     type        = string
-    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
+    description = "The ID of the conversation or channel containing the message."
   }
 
   param "message_ts" {
@@ -20,17 +19,22 @@ pipeline "get_message_permalink" {
   }
 
   step "http" "get_message_permalink" {
-    url    = "https://slack.com/api/chat.getPermalink?channel=${param.channel}&message_ts=${param.message_ts}"
     method = "get"
+    url    = "https://slack.com/api/chat.getPermalink?channel=${param.channel}&message_ts=${param.message_ts}"
 
     request_headers = {
       Content-Type  = "application/x-www-form-urlencoded"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
+    }
+
+    throw {
+      if      = result.response_body.ok == false
+      message = result.response_body.error
     }
   }
 
   output "permalink" {
-    value       = step.http.get_message_permalink.response_body.permalink
     description = "Message Permalink URL."
+    value       = step.http.get_message_permalink.response_body.permalink
   }
 }

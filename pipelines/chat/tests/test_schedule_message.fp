@@ -3,10 +3,10 @@ pipeline "test_schedule_message" {
   title       = "Test Schedule Message"
   description = "Test the schedule_message pipeline."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "message" {
@@ -32,7 +32,7 @@ pipeline "test_schedule_message" {
       channel = param.channel
       message = param.message
       post_at = param.post_at
-      token   = param.token
+      cred    = param.cred
     }
   }
 
@@ -41,7 +41,7 @@ pipeline "test_schedule_message" {
 
     pipeline = pipeline.list_scheduled_messages
     args = {
-      token = param.token
+      cred = param.cred
     }
   }
 
@@ -53,7 +53,7 @@ pipeline "test_schedule_message" {
 
     pipeline = pipeline.delete_scheduled_message
     args = {
-      token                = param.token
+      cred                 = param.cred
       channel              = param.channel
       scheduled_message_id = step.pipeline.schedule_message.output.schedule_message.scheduled_message_id
     }

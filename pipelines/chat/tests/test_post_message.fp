@@ -3,10 +3,10 @@ pipeline "test_post_message" {
   title       = "Test Post Message"
   description = "Test the post_message pipeline."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "message" {
@@ -23,7 +23,7 @@ pipeline "test_post_message" {
   step "pipeline" "post_message" {
     pipeline = pipeline.post_message
     args = {
-      token   = param.token
+      cred    = param.cred
       channel = param.channel
       message = param.message
     }
@@ -33,7 +33,7 @@ pipeline "test_post_message" {
     if       = !is_error(step.pipeline.post_message)
     pipeline = pipeline.delete_message
     args = {
-      token   = param.token
+      cred    = param.cred
       channel = param.channel
       ts      = step.pipeline.post_message.output.message.ts
     }

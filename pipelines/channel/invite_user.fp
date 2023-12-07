@@ -1,12 +1,11 @@
-// usage: flowpipe pipeline run invite_user --pipeline-arg channel="C012ABCDXYZ" --pipeline-arg 'users=["UB1XY0ABC", "UGABCD1KL"]'
 pipeline "invite_user" {
   title       = "Invite User"
-  description = "Invite user(s) to a Slack channel."
+  description = "Invites users to a channel."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "channel" {
@@ -15,27 +14,33 @@ pipeline "invite_user" {
   }
 
   param "users" {
-    type        = list(string)
+    type        = string
     description = "A comma separated list of user IDs. Up to 1000 users may be listed."
   }
 
   step "http" "invite_user" {
-    url    = "https://slack.com/api/conversations.invite"
     method = "post"
+    url    = "https://slack.com/api/conversations.invite"
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = jsonencode({
       channel = param.channel
       users   = param.users
     })
+
+    throw {
+      if      = result.response_body.ok == false
+      message = result.response_body.error
+    }
+
   }
 
-  output "invite" {
+  output "channel" {
+    description = "Channel details."
     value       = step.http.invite_user.response_body.channel
-    description = "Invitation details."
   }
 }

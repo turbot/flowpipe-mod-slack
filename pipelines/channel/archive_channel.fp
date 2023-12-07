@@ -1,30 +1,35 @@
-// usage: flowpipe pipeline run archive_channel --pipeline-arg channel="C012ABCDXYZ"
 pipeline "archive_channel" {
   title       = "Archive Channel"
-  description = "Archive a Slack channel."
+  description = "Archives a conversation."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "channel" {
     type        = string
-    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
+    description = "ID of conversation to archive."
   }
 
   step "http" "archive_channel" {
-    url    = "https://slack.com/api/conversations.archive"
     method = "post"
+    url    = "https://slack.com/api/conversations.archive"
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = jsonencode({
       channel = param.channel
     })
+
+    throw {
+      if      = result.response_body.ok == false
+      message = result.response_body.error
+    }
+
   }
 }

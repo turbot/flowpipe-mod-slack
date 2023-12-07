@@ -2,50 +2,62 @@ pipeline "list_channels" {
   title       = "List Channels"
   description = "Lists all channels in a Slack team."
 
+  tags = {
+    type = "featured"
+  }
+
   param "cred" {
     type        = string
-    description = "Name for credentials to use. If not provided, the default credentials will be used."
+    description = local.cred_param_description
     default     = "default"
   }
 
   param "types" {
     type        = list(string)
-    default     = ["public_channel"]
-    description = "Mix and match channel types by providing a comma-separated list of any combination of public_channel, private_channel, mpim, im."
+    description = "Mix and match channel types by providing a list of any combination of public_channel, private_channel, mpim, im."
+    optional    = true
   }
 
   param "exclude_archived" {
     type        = bool
-    default     = false
     description = "Set to true to exclude archived channels from the list."
+    optional    = true
   }
 
-  # TODO: Add pagination support
   step "http" "list_channels" {
-    url    = "https://slack.com/api/conversations.list"
     method = "get"
+
+    url = join("&", concat(
+      ["https://slack.com/api/conversations.list?limit=200"],
+      [param.types == null ? "" : "types=${join(",", param.types)}"],
+      [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["cred", "types"], name)],
+    ))
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
       Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
-    request_body = jsonencode(
-      merge(
-        { for name, value in param : name => value if value != null && !contains(["cred"], name) },
-        { types = join(",", param.types) },
-      )
-    )
-
-    # TODO: Remove extra try() once https://github.com/turbot/flowpipe/issues/387 is resolved
     throw {
       if      = result.response_body.ok == false
-      message = try(result.response_body.error, "")
+      message = result.response_body.error
     }
+
+    loop {
+      until = result.response_body.response_metadata.next_cursor == null || result.response_body.response_metadata.next_cursor == ""
+
+      url = join("&", concat(
+        ["https://slack.com/api/conversations.list?limit=200"],
+        [param.types == null ? "" : "types=${join(",", param.types)}"],
+        [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["cred", "types"], name)],
+        ["cursor=${result.response_body.response_metadata.next_cursor}"]
+      ))
+    }
+
   }
 
   output "channels" {
     description = "List of channel details."
-    value       = step.http.list_channels.response_body.channels
+    value       = flatten([for entry in step.http.list_channels : entry.response_body.channels])
   }
 }

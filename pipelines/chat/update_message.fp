@@ -1,22 +1,21 @@
-// usage: flowpipe pipeline run update_message --pipeline-arg ts="1698385111.481129" --pipeline-arg message="hello world updated" --pipeline-arg channel=CEFG8LMN9
 pipeline "update_message" {
   title       = "Update Message"
-  description = "Update a message."
+  description = "Updates a message."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
-  param "message" {
+  param "text" {
     type        = string
-    description = "The formatted text of the message to be published."
+    description = "The formatted text to describe the content of the message."
   }
 
   param "channel" {
     type        = string
-    description = "Channel, private group, or IM channel to send message to. Must be an encoded ID."
+    description = "Channel containing the message to be updated."
   }
 
   param "ts" {
@@ -25,23 +24,28 @@ pipeline "update_message" {
   }
 
   step "http" "update_message" {
-    url    = "https://slack.com/api/chat.update"
     method = "post"
+    url    = "https://slack.com/api/chat.update"
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${param.token}"
+      Authorization = "Bearer ${credential.slack[param.cred].token}"
     }
 
     request_body = jsonencode({
       channel = param.channel
-      text    = param.message
+      text    = param.text
       ts      = param.ts
     })
+
+    throw {
+      if      = result.response_body.ok == false
+      message = result.response_body.error
+    }
   }
 
   output "message" {
-    value       = step.http.update_message.response_body.message
     description = "Message details."
+    value       = step.http.update_message.response_body.message
   }
 }

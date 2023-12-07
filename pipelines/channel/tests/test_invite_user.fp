@@ -2,10 +2,10 @@ pipeline "test_invite_user" {
   title       = "Test Invite User"
   description = "Test the invite_user pipeline."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "channel_to_create" {
@@ -31,7 +31,7 @@ pipeline "test_invite_user" {
     args = {
       channel    = param.channel_to_create
       is_private = param.is_private
-      token      = param.token
+      cred       = param.cred
     }
   }
 

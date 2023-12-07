@@ -2,10 +2,10 @@ pipeline "test_create_channel" {
   title       = "Test Create Channel"
   description = "Test the create_channel pipeline."
 
-  param "token" {
+  param "cred" {
     type        = string
-    default     = var.token
-    description = local.token_param_description
+    description = local.cred_param_description
+    default     = "default"
   }
 
   param "channel_to_create" {
@@ -25,7 +25,7 @@ pipeline "test_create_channel" {
     args = {
       channel    = param.channel_to_create
       is_private = param.is_private
-      token      = param.token
+      cred       = param.cred
     }
   }
 
