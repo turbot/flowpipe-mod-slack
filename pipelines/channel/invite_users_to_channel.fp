@@ -1,5 +1,5 @@
-pipeline "invite_user" {
-  title       = "Invite User"
+pipeline "invite_users_to_channel" {
+  title       = "Invite Users to Channel"
   description = "Invites users to a channel."
 
   param "cred" {
@@ -14,11 +14,11 @@ pipeline "invite_user" {
   }
 
   param "users" {
-    type        = string
-    description = "A comma separated list of user IDs. Up to 1000 users may be listed."
+    type        = list(string)
+    description = "A list of user IDs. Up to 1000 users may be listed."
   }
 
-  step "http" "invite_user" {
+  step "http" "invite_users_to_channel" {
     method = "post"
     url    = "https://slack.com/api/conversations.invite"
 
@@ -29,7 +29,7 @@ pipeline "invite_user" {
 
     request_body = jsonencode({
       channel = param.channel
-      users   = param.users
+      users   = join(",", param.users)
     })
 
     throw {
@@ -41,6 +41,6 @@ pipeline "invite_user" {
 
   output "channel" {
     description = "Channel details."
-    value       = step.http.invite_user.response_body.channel
+    value       = step.http.invite_users_to_channel.response_body.channel
   }
 }

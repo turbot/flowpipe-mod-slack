@@ -1,6 +1,6 @@
-pipeline "test_invite_user" {
-  title       = "Test Invite User"
-  description = "Test the invite_user pipeline."
+pipeline "test_invite_users_to_channel" {
+  title       = "Test Invite Users to Channel"
+  description = "Test the invite_users_to_channel pipeline."
 
   param "cred" {
     type        = string
@@ -48,9 +48,9 @@ pipeline "test_invite_user" {
     }
   }
 
-  step "pipeline" "invite_user" {
+  step "pipeline" "invite_users_to_channel" {
     if       = !is_error(step.pipeline.get_channel)
-    pipeline = pipeline.invite_user
+    pipeline = pipeline.invite_users_to_channel
     args = {
       users   = param.users
       channel = step.pipeline.create_channel.output.channel.id
@@ -65,7 +65,7 @@ pipeline "test_invite_user" {
   step "pipeline" "archive_channel" {
     if = !is_error(step.pipeline.create_channel)
     # Don't run before we've had a chance to remove users
-    depends_on = [step.pipeline.invite_user]
+    depends_on = [step.pipeline.invite_users_to_channel]
 
     pipeline = pipeline.archive_channel
     args = {
@@ -93,9 +93,9 @@ pipeline "test_invite_user" {
     value       = !is_error(step.pipeline.get_channel) ? "pass" : "fail: ${step.pipeline.get_channel.errors}"
   }
 
-  output "invite_user" {
-    description = "Check for pipeline.invite_user."
-    value       = !is_error(step.pipeline.invite_user) ? "pass" : "fail: ${step.pipeline.invite_user.errors}"
+  output "invite_users_to_channel" {
+    description = "Check for pipeline.invite_users_to_channel."
+    value       = !is_error(step.pipeline.invite_users_to_channel) ? "pass" : "fail: ${step.pipeline.invite_users_to_channel.errors}"
   }
 
   output "archive_channel" {
