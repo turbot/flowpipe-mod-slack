@@ -5,7 +5,7 @@ pipeline "list_scheduled_messages" {
   param "cred" {
     type        = string
     description = local.cred_param_description
-    default     = var.default_cred
+    default     = "default"
   }
 
   # TODO: Add pagination support once https://github.com/turbot/flowpipe/issues/339 is resolved

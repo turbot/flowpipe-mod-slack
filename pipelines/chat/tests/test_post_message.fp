@@ -6,7 +6,7 @@ pipeline "test_post_message" {
   param "cred" {
     type        = string
     description = local.cred_param_description
-    default     = var.default_cred
+    default     = "default"
   }
 
   param "message" {

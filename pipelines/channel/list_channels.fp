@@ -5,7 +5,7 @@ pipeline "list_channels" {
   param "cred" {
     type        = string
     description = local.cred_param_description
-    default     = var.default_cred
+    default     = "default"
   }
 
   param "types" {
@@ -42,6 +42,7 @@ pipeline "list_channels" {
 
     loop {
       until = result.response_body.response_metadata.next_cursor == null || result.response_body.response_metadata.next_cursor == ""
+
       url = join("&", concat(
         ["https://slack.com/api/conversations.list?limit=200"],
         [param.types == null ? "" : "types=${join(",", param.types)}"],
