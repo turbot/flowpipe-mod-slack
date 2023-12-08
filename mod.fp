@@ -4,7 +4,7 @@ mod "slack" {
   color         = "#7C2852"
   documentation = file("./docs/index.md")
   icon          = "/images/flowpipe/mods/turbot/slack.svg"
-  categories    = ["slack"]
+  categories    = ["messaging"]
 
   opengraph {
     title       = "Slack Mod for Flowpipe"
