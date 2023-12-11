@@ -1,6 +1,6 @@
 pipeline "post_message_to_webhook" {
-  title       = "Post Message"
-  description = "Sends a message to a channel."
+  title       = "Post Message to Webhook"
+  description = "Post messages from apps into Slack using incoming webhooks."
 
   tags = {
     type = "featured"

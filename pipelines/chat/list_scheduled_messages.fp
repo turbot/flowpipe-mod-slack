@@ -8,7 +8,6 @@ pipeline "list_scheduled_messages" {
     default     = "default"
   }
 
-  # TODO: Add pagination support once https://github.com/turbot/flowpipe/issues/339 is resolved
   step "http" "list_scheduled_messages" {
     method = "post"
     url    = "https://slack.com/api/chat.scheduledMessages.list"
@@ -19,17 +18,28 @@ pipeline "list_scheduled_messages" {
     }
 
     request_body = jsonencode({
-      limit = 1000
+      limit = 200
     })
 
     throw {
       if      = result.response_body.ok == false
       message = result.response_body.error
     }
+
+    loop {
+      until = result.response_body.response_metadata.next_cursor == ""
+
+      request_body = jsonencode({
+        channel = param.channel
+        oldest  = param.oldest
+        limit   = 200
+        cursor  = result.response_body.response_metadata.next_cursor
+      })
+    }
   }
 
   output "scheduled_messages" {
     description = "List of pending scheduled messages."
-    value       = step.http.list_scheduled_messages.response_body.scheduled_messages
+    value       = flatten([for entry in step.http.list_scheduled_messages : entry.response_body.scheduled_messages])
   }
 }

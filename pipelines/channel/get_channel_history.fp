@@ -19,7 +19,6 @@ pipeline "get_channel_history" {
     default     = 0
   }
 
-  # TODO: Add pagination support once https://github.com/turbot/flowpipe/issues/339 is resolved
   step "http" "get_channel_history" {
     method = "post"
     url    = "https://slack.com/api/conversations.history"
@@ -32,17 +31,28 @@ pipeline "get_channel_history" {
     request_body = jsonencode({
       channel = param.channel
       oldest  = param.oldest
-      limit   = 1000
+      limit   = 200
     })
 
     throw {
       if      = result.response_body.ok == false
       message = result.response_body.error
     }
+
+    loop {
+      until = result.response_body.has_more == false
+
+      request_body = jsonencode({
+        channel = param.channel
+        oldest  = param.oldest
+        limit   = 200
+        cursor  = result.response_body.response_metadata.next_cursor
+      })
+    }
   }
 
   output "messages" {
     description = "Channel history."
-    value       = step.http.get_channel_history.messages
+    value       = flatten([for entry in step.http.get_channel_history : entry.response_body.messages])
   }
 }
