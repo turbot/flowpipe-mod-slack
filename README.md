@@ -106,7 +106,7 @@ flowpipe pipeline run post_message -arg channel=test -arg text="Hello World"
 To use a specific `credential`, specify the `cred` pipeline argument:
 
 ```sh
-flowpipe pipeline run post_message -arg channel=test -arg text="Hello World" -arg cred=slack_cred
+flowpipe pipeline run post_message --arg channel=test --arg text="Hello World" --arg cred=slack_profile
 ```
 
 ## Open Source & Contributing
