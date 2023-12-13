@@ -30,8 +30,8 @@ pipeline "test_update_message" {
     pipeline = pipeline.post_message
     args = {
       channel = param.channel
-      message = param.initial_message
       cred    = param.cred
+      message = param.initial_message
     }
   }
 
@@ -40,8 +40,8 @@ pipeline "test_update_message" {
     pipeline = pipeline.update_message
     args = {
       channel = param.channel
-      message = param.updated_message
       cred    = param.cred
+      message = param.updated_message
       ts      = step.pipeline.post_message.output.message.ts
     }
 
@@ -57,8 +57,8 @@ pipeline "test_update_message" {
 
     pipeline = pipeline.delete_message
     args = {
-      cred    = param.cred
       channel = param.channel
+      cred    = param.cred
       ts      = step.pipeline.post_message.output.message.ts
     }
   }

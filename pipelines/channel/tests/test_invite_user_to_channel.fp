@@ -40,6 +40,7 @@ pipeline "test_invite_users_to_channel" {
     pipeline = pipeline.get_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
+      cred    = param.cred
     }
 
     # Ignore errors so we can delete channel
@@ -52,8 +53,9 @@ pipeline "test_invite_users_to_channel" {
     if       = !is_error(step.pipeline.get_channel)
     pipeline = pipeline.invite_users_to_channel
     args = {
-      users   = param.users
       channel = step.pipeline.create_channel.output.channel.id
+      cred    = param.cred
+      users   = param.users
     }
 
     # Ignore errors so we can delete channel
@@ -70,6 +72,7 @@ pipeline "test_invite_users_to_channel" {
     pipeline = pipeline.archive_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
+      cred    = param.cred
     }
   }
 

@@ -30,9 +30,9 @@ pipeline "test_schedule_message" {
     pipeline = pipeline.schedule_message
     args = {
       channel = param.channel
+      cred    = param.cred
       message = param.message
       post_at = param.post_at
-      cred    = param.cred
     }
   }
 
@@ -53,8 +53,8 @@ pipeline "test_schedule_message" {
 
     pipeline = pipeline.delete_scheduled_message
     args = {
-      cred                 = param.cred
       channel              = param.channel
+      cred                 = param.cred
       scheduled_message_id = step.pipeline.schedule_message.output.schedule_message.scheduled_message_id
     }
   }

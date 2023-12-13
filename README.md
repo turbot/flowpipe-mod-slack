@@ -1,8 +1,16 @@
 # Slack Mod for Flowpipe
 
-Run pipelines and use triggers for Slack resources.
+Slack pipeline library for [Flowpipe](https://flowpipe.io), enabling seamless integration of Slack services into your workflows.
+
+## Documentation
+
+- **[Pipelines →](https://hub.flowpipe.io/mods/turbot/slack/pipelines)**
 
 ## Getting started
+
+### Requirements
+
+Docker daemon must be installed and running. Please see [Install Docker Engine](https://docs.docker.com/engine/install/) for more information.
 
 ### Installation
 
@@ -20,12 +28,34 @@ git clone https://github.com/turbot/flowpipe-mod-slack.git
 cd flowpipe-mod-slack
 ```
 
+### Credentials
+
+By default, the following environment variables will be used for authentication:
+
+- `SLACK_TOKEN`
+
+You can also create `credential` resources in configuration files:
+
+```sh
+vi ~/.flowpipe/config/slack.fpc
+```
+
+```hcl
+credential "slack" "slack_cred" {
+  token = "xoxp-12345-..."
+}
+```
+
+For more information on credentials in Flowpipe, please see [Managing Credentials](https://flowpipe.io/docs/run/credentials).
+
 ### Usage
 
 Start your server to get started:
 
+List pipelines:
+
 ```sh
-flowpipe service start
+flowpipe pipeline list
 ```
 
 Run a pipeline:
@@ -34,30 +64,33 @@ Run a pipeline:
 flowpipe pipeline run post_message
 ```
 
-### Credentials
+You can pass in pipeline arguments as well:
 
-This mod uses the credentials configured in `flowpipe.pvars` or passed through `--pipeline-args token`.
+  ```shell
+  flowpipe pipeline run post_message -arg channel=test -arg text="Hello World"
+  ```
+
+To use a specific `credential`, specify the `cred` pipeline argument:
+
+```sh
+flowpipe pipeline run post_message -arg channel=test -arg text="Hello World" -arg cred=slack_cred
+```
+
+For more examples on how you can run pipelines, please see [Run Pipelines](https://flowpipe.io/docs/run/pipelines).
 
 ### Configuration
 
-Pipelines have [input variables](https://flowpipe.io/docs/using-flowpipe/mod-variables) that can be configured to better match your environment and requirements. Some variables have defaults defined in its source file, e.g., `variables.hcl`, but these can be overwritten in several ways:
+No additional configuration is required.
 
-- Copy and rename the `flowpipe.pvars.example` file to `flowpipe.pvars`, and then modify the variable values inside that file
-- Pass in a value on the command line:
+## Open Source & Contributing
 
-  ```shell
-  flowpipe pipeline run post_message --pipeline-arg token="xoxp-12345-67890"
-  ```
+This repository is published under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0). Please see our [code of conduct](https://github.com/turbot/.github/blob/main/CODE_OF_CONDUCT.md). We look forward to collaborating with you!
 
-These are only some of the ways you can set variables. For a full list, please see [Passing Input Variables](https://flowpipe.io/docs/using-flowpipe/mod-variables#passing-input-variables).
+[Flowpipe](https://flowpipe.io) is a product produced from this open source software, exclusively by [Turbot HQ, Inc](https://turbot.com). It is distributed under our commercial terms. Others are allowed to make their own distribution of the software, but cannot use any of the Turbot trademarks, cloud services, etc. You can learn more in our [Open Source FAQ](https://turbot.com/open-source).
 
-## Contributing
+## Get Involved
 
-If you have an idea for additional controls or just want to help maintain and extend this mod ([or others](https://github.com/topics/flowpipe-mod)) we would love you to join the community and start contributing.
-
-- **[Join our Slack community →](https://flowpipe.io/community/join)** and hang out with other Mod developers.
-
-Please see the [contribution guidelines](https://github.com/turbot/flowpipe/blob/main/CONTRIBUTING.md) and our [code of conduct](https://github.com/turbot/flowpipe/blob/main/CODE_OF_CONDUCT.md). All contributions are subject to the [Apache 2.0 open source license](https://github.com/turbot/flowpipe-mod-slack/blob/main/LICENSE).
+**[Join #flowpipe on Slack →](https://flowpipe.io/community/join)**
 
 Want to help but not sure where to start? Pick up one of the `help wanted` issues:
 

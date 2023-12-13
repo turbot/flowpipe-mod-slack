@@ -24,8 +24,8 @@ pipeline "test_create_channel" {
     pipeline = pipeline.create_channel
     args = {
       channel    = param.channel_to_create
-      is_private = param.is_private
       cred       = param.cred
+      is_private = param.is_private
     }
   }
 
@@ -34,6 +34,7 @@ pipeline "test_create_channel" {
     pipeline = pipeline.get_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
+      cred    = param.cred
     }
 
     # Ignore errors so we can delete
@@ -48,6 +49,7 @@ pipeline "test_create_channel" {
     pipeline = pipeline.archive_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
+      cred    = param.cred
     }
   }
 

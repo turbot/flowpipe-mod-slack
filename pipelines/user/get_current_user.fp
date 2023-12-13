@@ -1,5 +1,5 @@
 pipeline "get_current_user" {
-  title       = "Get Current User Profile"
+  title       = "Get Current User"
   description = "Retrieve the current user's or bot's profile information, including their custom status."
 
   param "cred" {
