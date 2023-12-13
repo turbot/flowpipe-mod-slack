@@ -8,10 +8,6 @@ Slack pipeline library for [Flowpipe](https://flowpipe.io), enabling seamless in
 
 ## Getting started
 
-### Requirements
-
-Docker daemon must be installed and running. Please see [Install Docker Engine](https://docs.docker.com/engine/install/) for more information.
-
 ### Installation
 
 Download and install Flowpipe (https://flowpipe.io/downloads). Or use Brew:
@@ -77,10 +73,6 @@ flowpipe pipeline run post_message -arg channel=test -arg text="Hello World" -ar
 ```
 
 For more examples on how you can run pipelines, please see [Run Pipelines](https://flowpipe.io/docs/run/pipelines).
-
-### Configuration
-
-No additional configuration is required.
 
 ## Open Source & Contributing
 
