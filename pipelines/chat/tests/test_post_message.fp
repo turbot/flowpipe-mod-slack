@@ -1,4 +1,4 @@
-// usage: flowpipe pipeline run test_post_message --pipeline-arg message="Hello World"
+// usage: flowpipe pipeline run test_post_message --arg text="Hello from test_post_message" --arg channel="random"
 pipeline "test_post_message" {
   title       = "Test Post Message"
   description = "Test the post_message pipeline."
@@ -9,7 +9,7 @@ pipeline "test_post_message" {
     default     = "default"
   }
 
-  param "message" {
+  param "text" {
     type        = string
     default     = "Hello World from test_post_message pipeline."
     description = "The formatted text of the message to be published."
@@ -25,7 +25,7 @@ pipeline "test_post_message" {
     args = {
       cred    = param.cred
       channel = param.channel
-      message = param.message
+      text    = param.text
     }
   }
 
