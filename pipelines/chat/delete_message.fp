@@ -18,16 +18,11 @@ pipeline "delete_message" {
     description = "Timestamp of the message to be deleted."
   }
 
-  step "pipeline" "list_channels" {
-    pipeline = pipeline.list_channels
-  }
-
-  step "transform" "channel_id" {
-    value = { for channel in step.pipeline.list_channels.output.channels : channel.name => channel.id if channel.name == param.channel }
-  }
-
-  output "channel_id" {
-    value = step.transform.channel_id.value[param.channel]
+  step "pipeline" "get_channel_id" {
+    pipeline = pipeline.get_channel_id
+    args = {
+      channel_name = param.channel
+    }
   }
 
   step "http" "delete_message" {
@@ -40,7 +35,7 @@ pipeline "delete_message" {
     }
 
     request_body = jsonencode({
-      channel = step.transform.channel_id.value[param.channel]
+      channel = step.pipeline.get_channel_id.output.channel_id
       ts      = param.ts
     })
 
