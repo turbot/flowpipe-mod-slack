@@ -18,13 +18,6 @@ pipeline "delete_message" {
     description = "Timestamp of the message to be deleted."
   }
 
-  step "pipeline" "get_channel_id" {
-    pipeline = pipeline.get_channel_id
-    args = {
-      channel_name = param.channel
-    }
-  }
-
   step "http" "delete_message" {
     method = "post"
     url    = "https://slack.com/api/chat.delete"
@@ -35,7 +28,7 @@ pipeline "delete_message" {
     }
 
     request_body = jsonencode({
-      channel = step.pipeline.get_channel_id.output.channel_id
+      channel = param.channel
       ts      = param.ts
     })
 
@@ -44,5 +37,4 @@ pipeline "delete_message" {
       message = result.response_body.error
     }
   }
-
 }

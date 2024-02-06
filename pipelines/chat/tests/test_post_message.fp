@@ -29,12 +29,19 @@ pipeline "test_post_message" {
     }
   }
 
+  step "pipeline" "get_channel_id" {
+    pipeline = pipeline.get_channel_id
+    args = {
+      channel_name = param.channel
+    }
+  }
+
   step "pipeline" "delete_message" {
     if       = !is_error(step.pipeline.post_message)
     pipeline = pipeline.delete_message
     args = {
       cred    = param.cred
-      channel = param.channel
+      channel = step.pipeline.get_channel_id.output.channel_id
       ts      = step.pipeline.post_message.output.message.ts
     }
   }
