@@ -6,7 +6,7 @@ _What's new?_
 
 _Bug fixes_
 
-- Fix the input parameters of the `test_post_message` pipeline. ([#17](https://github.com/turbot/flowpipe-mod-slack/pull/17))
+- Fixed the input parameters of the `test_post_message` pipeline. ([#17](https://github.com/turbot/flowpipe-mod-slack/pull/17))
 
 
 ## v0.1.0 [2023-12-14]
