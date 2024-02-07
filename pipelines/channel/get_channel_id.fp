@@ -20,6 +20,4 @@ pipeline "get_channel_id" {
   output "channel_id" {
     value = [for channel in step.pipeline.list_channels.output.channels : channel.id if channel.name == param.channel_name][0]
   }
-
-
 }
