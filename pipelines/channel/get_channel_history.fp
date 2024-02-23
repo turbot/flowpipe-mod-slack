@@ -16,7 +16,7 @@ pipeline "get_channel_history" {
   param "oldest" {
     type        = string
     description = "Only messages after this Unix timestamp will be included in results."
-    default     = 0
+    default     = "0"
   }
 
   step "http" "get_channel_history" {
