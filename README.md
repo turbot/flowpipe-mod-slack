@@ -30,16 +30,23 @@ vi ~/.flowpipe/config/slack.fpc
 ```
 
 ```hcl
-credential "slack" "slack_cred" {
+credential "slack" "default" {
   token = "xoxp-12345-..."
+}
+
+credential "slack" "workspace_2" {
+  token = "xoxp-67890-..."
 }
 ```
 
-For more information on credentials in Flowpipe, please see [Managing Credentials](https://flowpipe.io/docs/run/credentials).
+For more information on credentials, please see:
+
+- [Managing Credentials](https://flowpipe.io/docs/run/credentials)
+- [Slack Credentials](https://flowpipe.io/docs/reference/config-files/credential/slack)
 
 ### Usage
 
-[Initialize a mod](https://flowpipe.io/docs/build/index#initializing-a-mod):
+[Initialize a mod](https://flowpipe.io/docs/build#initializing-a-mod)::
 
 ```sh
 mkdir my_mod
@@ -53,7 +60,7 @@ flowpipe mod init
 flowpipe mod install github.com/turbot/flowpipe-mod-slack
 ```
 
-[Use the dependency](https://flowpipe.io/docs/build/write-pipelines/index) in a pipeline step:
+[Use the dependency](https://flowpipe.io/docs/build/write-pipelines) in a pipeline step:
 
 ```sh
 vi my_pipeline.fp
@@ -62,9 +69,16 @@ vi my_pipeline.fp
 ```hcl
 pipeline "my_pipeline" {
 
+  param "cred" {
+    type        = string
+    description = "Name for Slack credentials to use. If not provided, the default credentials will be used."
+    default     = "default"
+  }
+
   step "pipeline" "post_message" {
     pipeline = slack.pipeline.post_message
     args = {
+      cred    = param.cred
       channel = "test"
       text    = "Hello World"
     }
@@ -76,6 +90,12 @@ pipeline "my_pipeline" {
 
 ```sh
 flowpipe pipeline run my_pipeline
+```
+
+To use a specific `credential`, specify the `cred` pipeline argument:
+
+```sh
+flowpipe pipeline run my_pipeline --arg cred=workspace_2
 ```
 
 ### Developing
@@ -102,7 +122,7 @@ flowpipe pipeline run post_message --arg channel=test --arg text="Hello World"
 To use a specific `credential`, specify the `cred` pipeline argument:
 
 ```sh
-flowpipe pipeline run post_message --arg channel=test --arg text="Hello World" --arg cred=slack_profile
+flowpipe pipeline run post_message --arg channel=test --arg text="Hello World" --arg cred=workspace_2
 ```
 
 ## Open Source & Contributing
