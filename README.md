@@ -46,7 +46,7 @@ For more information on credentials, please see:
 
 ### Usage
 
-[Initialize a mod](https://flowpipe.io/docs/build#initializing-a-mod)::
+[Initialize a mod](https://flowpipe.io/docs/build#initializing-a-mod):
 
 ```sh
 mkdir my_mod
