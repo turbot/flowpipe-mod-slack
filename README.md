@@ -122,7 +122,7 @@ flowpipe pipeline run post_message --arg channel=test --arg text="Hello World"
 To use a specific `credential`, specify the `cred` pipeline argument:
 
 ```sh
-flowpipe pipeline run post_message --arg channel=test --arg text="Hello World" --arg cred=workspace_2
+flowpipe pipeline run post_message --arg cred=workspace_2 --arg channel=test --arg text="Hello World"
 ```
 
 ## Open Source & Contributing
