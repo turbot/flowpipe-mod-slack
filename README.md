@@ -23,7 +23,7 @@ By default, the following environment variables will be used for authentication:
 
 - `SLACK_TOKEN`
 
-You can also create `credential` resources in configuration files:
+You can also set the `default` credential resource in a configuration file:
 
 ```sh
 vi ~/.flowpipe/config/slack.fpc
@@ -33,9 +33,17 @@ vi ~/.flowpipe/config/slack.fpc
 credential "slack" "default" {
   token = "xoxp-12345-..."
 }
+```
 
+If you have multiple workspaces, you can create multiple named credentials:
+
+```hcl
 credential "slack" "workspace_2" {
   token = "xoxp-67890-..."
+}
+
+credential "slack" "workspace_3" {
+  token = "xoxp-34567-..."
 }
 ```
 
