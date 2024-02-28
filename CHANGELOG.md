@@ -2,7 +2,7 @@
 
 _Bug fixes_
 
-- Fixed the type mismatch of the input parameter type in `get_channel_history` pipeline. ([#20](https://github.com/turbot/flowpipe-mod-slack/pull/20))
+- Fixed the type mismatch of the input parameter in the `get_channel_history` pipeline. ([#20](https://github.com/turbot/flowpipe-mod-slack/pull/20))
 
 ## v0.2.0 [2024-02-07]
 
