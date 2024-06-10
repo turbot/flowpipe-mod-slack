@@ -3,6 +3,10 @@ pipeline "test_post_message" {
   title       = "Test Post Message"
   description = "Test the post_message pipeline."
 
+  tags = {
+    type = "test"
+  }
+
   param "cred" {
     type        = string
     description = local.cred_param_description
