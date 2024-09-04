@@ -15,6 +15,13 @@ pipeline "post_message" {
   param "text" {
     type        = string
     description = "The formatted text to describe the content of the message."
+    optional    = true
+  }
+
+  param "blocks" {
+    type        = string
+    description = "The json to describe the blocks layout of the message."
+    optional    = true
   }
 
   param "channel" {
