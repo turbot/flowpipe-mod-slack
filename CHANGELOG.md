@@ -1,9 +1,8 @@
-## v0.3.0 [2024-09-13]
+## v0.3.0 [2024-09-20]
 
 _Enhancements_
 
-- Added additional optional param for blocks ([#24](https://github.com/turbot/flowpipe-mod-slack/pull/24)) (Thanks [@johnlayton](https://github.com/johnlayton) for the contribution!)
-- Added `test` tag to test pipelines. ([#23](https://github.com/turbot/flowpipe-mod-slack/pull/23))
+- Added an optional param `blocks` to the `post_message` pipeline. ([#24](https://github.com/turbot/flowpipe-mod-slack/pull/24)) (Thanks [@johnlayton](https://github.com/johnlayton) for the contribution!)
 
 ## v0.2.1 [2024-02-28]
 
