@@ -1,11 +1,7 @@
-// usage: flowpipe pipeline run test_post_message --arg text="Hello from test_post_message" --arg channel="random"
-pipeline "test_post_message" {
+// usage: flowpipe pipeline run test_post_blocks --arg blocks="[ { \"type\" : \"section\", \"text\" : { \"type\" : \"mrkdwn\", \"text\" : \"*Hello from test_post_blocks*\"} } ]" --arg channel="random"
+pipeline "test_post_blocks" {
   title       = "Test Post Message"
   description = "Test the post_message pipeline."
-
-  tags = {
-    type = "test"
-  }
 
   param "cred" {
     type        = string
@@ -13,15 +9,15 @@ pipeline "test_post_message" {
     default     = "default"
   }
 
-  param "text" {
+  param "blocks" {
     type        = string
-    default     = "Hello World from test_post_message pipeline."
-    description = "The formatted text of the message to be published."
+    default     = "Hello World from test_post_blocks pipeline."
+    description = "The json of the blocks layout to be published."
   }
 
   param "channel" {
     type        = string
-    description = "Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name."
+    description = "Channel, private group, or IM channel to send blocks to. Can be an encoded ID, or a name."
   }
 
   step "pipeline" "post_message" {
@@ -29,7 +25,7 @@ pipeline "test_post_message" {
     args = {
       cred    = param.cred
       channel = param.channel
-      text    = param.text
+      blocks  = param.blocks
     }
   }
 

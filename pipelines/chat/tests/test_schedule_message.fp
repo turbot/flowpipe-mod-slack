@@ -3,6 +3,10 @@ pipeline "test_schedule_message" {
   title       = "Test Schedule Message"
   description = "Test the schedule_message pipeline."
 
+  tags = {
+    type = "test"
+  }
+
   param "cred" {
     type        = string
     description = local.cred_param_description
