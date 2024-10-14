@@ -6,10 +6,10 @@ pipeline "test_invite_users_to_channel" {
     type = "test"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "channel_to_create" {
@@ -35,7 +35,7 @@ pipeline "test_invite_users_to_channel" {
     args = {
       channel    = param.channel_to_create
       is_private = param.is_private
-      cred       = param.cred
+      conn       = param.conn
     }
   }
 
@@ -44,7 +44,7 @@ pipeline "test_invite_users_to_channel" {
     pipeline = pipeline.get_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
-      cred    = param.cred
+      conn    = param.conn
     }
 
     # Ignore errors so we can delete channel
@@ -58,7 +58,7 @@ pipeline "test_invite_users_to_channel" {
     pipeline = pipeline.invite_users_to_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
-      cred    = param.cred
+      conn    = param.conn
       users   = param.users
     }
 
@@ -76,7 +76,7 @@ pipeline "test_invite_users_to_channel" {
     pipeline = pipeline.archive_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
-      cred    = param.cred
+      conn    = param.conn
     }
   }
 

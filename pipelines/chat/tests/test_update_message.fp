@@ -7,10 +7,10 @@ pipeline "test_update_message" {
     type = "test"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "initial_message" {
@@ -34,7 +34,7 @@ pipeline "test_update_message" {
     pipeline = pipeline.post_message
     args = {
       channel = param.channel
-      cred    = param.cred
+      connn   = param.conn
       message = param.initial_message
     }
   }
@@ -44,7 +44,7 @@ pipeline "test_update_message" {
     pipeline = pipeline.update_message
     args = {
       channel = param.channel
-      cred    = param.cred
+      conn    = param.conn
       message = param.updated_message
       ts      = step.pipeline.post_message.output.message.ts
     }
@@ -62,7 +62,7 @@ pipeline "test_update_message" {
     pipeline = pipeline.delete_message
     args = {
       channel = param.channel
-      cred    = param.cred
+      conn    = param.conn
       ts      = step.pipeline.post_message.output.message.ts
     }
   }

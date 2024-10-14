@@ -7,10 +7,10 @@ pipeline "test_schedule_message" {
     type = "test"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "message" {
@@ -34,7 +34,7 @@ pipeline "test_schedule_message" {
     pipeline = pipeline.schedule_message
     args = {
       channel = param.channel
-      cred    = param.cred
+      conn    = param.conn
       message = param.message
       post_at = param.post_at
     }
@@ -45,11 +45,11 @@ pipeline "test_schedule_message" {
 
     pipeline = pipeline.list_scheduled_messages
     args = {
-      cred = param.cred
+      conn = param.conn
     }
   }
 
-  // Note: You cannot delete scheduled messages that have already been posted to Slack or that will be posted to Slack within 60 seconds of the delete request. 
+  // Note: You cannot delete scheduled messages that have already been posted to Slack or that will be posted to Slack within 60 seconds of the delete request.
   // If attempted, this method will respond with an invalid_scheduled_message_id error.
   step "pipeline" "delete_scheduled_message" {
     if         = !is_error(step.pipeline.schedule_message)
@@ -58,7 +58,7 @@ pipeline "test_schedule_message" {
     pipeline = pipeline.delete_scheduled_message
     args = {
       channel              = param.channel
-      cred                 = param.cred
+      conn                 = param.conn
       scheduled_message_id = step.pipeline.schedule_message.output.schedule_message.scheduled_message_id
     }
   }

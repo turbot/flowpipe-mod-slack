@@ -2,10 +2,10 @@ pipeline "get_channel_history" {
   title       = "Get Channel History"
   description = "Fetches a conversation's history of messages and events."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "channel" {
@@ -25,7 +25,7 @@ pipeline "get_channel_history" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = jsonencode({

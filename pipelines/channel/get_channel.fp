@@ -2,10 +2,10 @@ pipeline "get_channel" {
   title       = "Get Channel"
   description = "Retrieve information about a conversation."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "channel" {
@@ -19,7 +19,7 @@ pipeline "get_channel" {
 
     request_headers = {
       Content-Type  = "application/x-www-form-urlencoded"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = "channel=${param.channel}"

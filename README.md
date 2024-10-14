@@ -17,25 +17,25 @@ brew tap turbot/tap
 brew install flowpipe
 ```
 
-### Credentials
+### Connections
 
 By default, the following environment variables will be used for authentication:
 
 - `SLACK_TOKEN`
 
-You can also create `credential` resources in configuration files:
+You can also create `connection` resources in configuration files:
 
 ```sh
 vi ~/.flowpipe/config/slack.fpc
 ```
 
 ```hcl
-credential "slack" "slack_cred" {
+connection "slack" "slack_conn" {
   token = "xoxp-12345-..."
 }
 ```
 
-For more information on credentials in Flowpipe, please see [Managing Credentials](https://flowpipe.io/docs/run/credentials).
+For more information on connections in Flowpipe, please see [Managing Connections](https://flowpipe.io/docs/run/connections).
 
 ### Usage
 
@@ -99,10 +99,10 @@ Run a pipeline:
 flowpipe pipeline run post_message --arg channel=test --arg text="Hello World"
 ```
 
-To use a specific `credential`, specify the `cred` pipeline argument:
+To use a specific `connection`, specify the `conn` pipeline argument:
 
 ```sh
-flowpipe pipeline run post_message --arg channel=test --arg text="Hello World" --arg cred=slack_profile
+flowpipe pipeline run post_message --arg channel=test --arg text="Hello World" --arg conn=connection.slack.my_conn
 ```
 
 ## Open Source & Contributing

@@ -7,10 +7,10 @@ pipeline "test_post_message" {
     type = "test"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "text" {
@@ -27,7 +27,7 @@ pipeline "test_post_message" {
   step "pipeline" "post_message" {
     pipeline = pipeline.post_message
     args = {
-      cred    = param.cred
+      conn    = param.conn
       channel = param.channel
       text    = param.text
     }
@@ -44,7 +44,7 @@ pipeline "test_post_message" {
     if       = !is_error(step.pipeline.post_message)
     pipeline = pipeline.delete_message
     args = {
-      cred    = param.cred
+      conn    = param.conn
       channel = step.pipeline.get_channel_id.output.channel_id
       ts      = step.pipeline.post_message.output.message.ts
     }

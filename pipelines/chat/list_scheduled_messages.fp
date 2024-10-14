@@ -2,10 +2,10 @@ pipeline "list_scheduled_messages" {
   title       = "List Scheduled Messages"
   description = "List of scheduled messages."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   step "http" "list_scheduled_messages" {
@@ -14,7 +14,7 @@ pipeline "list_scheduled_messages" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = jsonencode({
