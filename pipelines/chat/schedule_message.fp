@@ -46,7 +46,7 @@ pipeline "schedule_message" {
     }
 
     request_body = jsonencode({
-      for name, value in param : name => value if value != null && !contains(["cred"], name)
+      for name, value in param : name => value if value != null && !contains(["conn"], name)
     })
 
     throw {

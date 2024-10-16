@@ -30,7 +30,7 @@ pipeline "list_channels" {
     url = join("&", concat(
       ["https://slack.com/api/conversations.list?limit=200"],
       [param.types == null ? "" : "types=${join(",", param.types)}"],
-      [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["cred", "types"], name)],
+      [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["conn", "types"], name)],
     ))
 
     request_headers = {
@@ -49,7 +49,7 @@ pipeline "list_channels" {
       url = join("&", concat(
         ["https://slack.com/api/conversations.list?limit=200"],
         [param.types == null ? "" : "types=${join(",", param.types)}"],
-        [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["cred", "types"], name)],
+        [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["conn", "types"], name)],
         ["cursor=${result.response_body.response_metadata.next_cursor}"]
       ))
     }
