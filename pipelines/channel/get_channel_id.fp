@@ -15,6 +15,9 @@ pipeline "get_channel_id" {
 
   step "pipeline" "list_channels" {
     pipeline = pipeline.list_channels
+    args = {
+      conn    = param.conn
+    }
   }
 
   output "channel_id" {
