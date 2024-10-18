@@ -3,7 +3,7 @@ pipeline "test_invite_users_to_channel" {
   description = "Test the invite_users_to_channel pipeline."
 
   tags = {
-    type = "test"
+    folder = "Tests"
   }
 
   param "conn" {

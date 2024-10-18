@@ -4,7 +4,7 @@ pipeline "test_update_message" {
   description = "Test the update_message pipeline."
 
   tags = {
-    type = "test"
+    folder = "Tests"
   }
 
   param "conn" {
