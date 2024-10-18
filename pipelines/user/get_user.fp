@@ -3,7 +3,7 @@ pipeline "get_user" {
   description = "Retrieve a user's profile information, including their custom status."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
   param "conn" {

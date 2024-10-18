@@ -3,7 +3,7 @@ pipeline "post_message" {
   description = "Sends a message to a channel."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
   param "conn" {

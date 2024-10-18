@@ -3,7 +3,7 @@ pipeline "list_channels" {
   description = "Lists all channels in a Slack team."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
   param "conn" {
