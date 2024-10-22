@@ -2,10 +2,10 @@ pipeline "open_message" {
   title       = "Open Message"
   description = "Open or resume a direct message or multi-person direct message."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "users" {
@@ -19,7 +19,7 @@ pipeline "open_message" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = jsonencode({

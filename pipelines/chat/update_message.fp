@@ -2,10 +2,10 @@ pipeline "update_message" {
   title       = "Update Message"
   description = "Updates a message."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "text" {
@@ -29,7 +29,7 @@ pipeline "update_message" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = jsonencode({

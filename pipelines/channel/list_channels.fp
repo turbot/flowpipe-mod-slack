@@ -3,13 +3,13 @@ pipeline "list_channels" {
   description = "Lists all channels in a Slack team."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "types" {
@@ -30,12 +30,12 @@ pipeline "list_channels" {
     url = join("&", concat(
       ["https://slack.com/api/conversations.list?limit=200"],
       [param.types == null ? "" : "types=${join(",", param.types)}"],
-      [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["cred", "types"], name)],
+      [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["conn", "types"], name)],
     ))
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     throw {
@@ -49,7 +49,7 @@ pipeline "list_channels" {
       url = join("&", concat(
         ["https://slack.com/api/conversations.list?limit=200"],
         [param.types == null ? "" : "types=${join(",", param.types)}"],
-        [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["cred", "types"], name)],
+        [for name, value in param : "${name}=${urlencode(value)}" if value != null && !contains(["conn", "types"], name)],
         ["cursor=${result.response_body.response_metadata.next_cursor}"]
       ))
     }

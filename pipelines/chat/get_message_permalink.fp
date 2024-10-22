@@ -2,10 +2,10 @@ pipeline "get_message_permalink" {
   title       = "Get Message Permalink"
   description = "Retrieve a permalink URL for a specific extant message."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "channel" {
@@ -24,7 +24,7 @@ pipeline "get_message_permalink" {
 
     request_headers = {
       Content-Type  = "application/x-www-form-urlencoded"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     throw {

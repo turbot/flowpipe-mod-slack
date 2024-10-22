@@ -2,10 +2,10 @@ pipeline "invite_users_to_channel" {
   title       = "Invite Users to Channel"
   description = "Invites users to a channel."
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "channel" {
@@ -24,7 +24,7 @@ pipeline "invite_users_to_channel" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = jsonencode({
