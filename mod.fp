@@ -11,4 +11,10 @@ mod "slack" {
     description = "Run pipelines to supercharge your Slack workflows using Flowpipe."
     image       = "/images/mods/turbot/slack-social-graphic.png"
   }
+
+  require {
+    flowpipe {
+      min_version = "1.0.0"
+    }
+  }
 }
