@@ -3,13 +3,13 @@ pipeline "post_message" {
   description = "Sends a message to a channel."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "text" {
@@ -53,11 +53,11 @@ pipeline "post_message" {
 
     request_headers = {
       Content-Type  = "application/json; charset=utf-8"
-      Authorization = "Bearer ${credential.slack[param.cred].token}"
+      Authorization = "Bearer ${param.conn.token}"
     }
 
     request_body = jsonencode({
-      for name, value in param : name => value if value != null && !contains(["cred"], name)
+      for name, value in param : name => value if value != null && !contains(["conn"], name)
     })
 
     throw {

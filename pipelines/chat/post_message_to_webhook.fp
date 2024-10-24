@@ -3,7 +3,7 @@ pipeline "post_message_to_webhook" {
   description = "Post messages from apps into Slack using incoming webhooks."
 
   tags = {
-    type = "featured"
+    recommended = "true"
   }
 
   param "text" {

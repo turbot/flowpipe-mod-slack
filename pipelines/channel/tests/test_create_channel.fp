@@ -3,13 +3,13 @@ pipeline "test_create_channel" {
   description = "Test the create_channel pipeline."
 
   tags = {
-    type = "test"
+    folder = "Tests"
   }
 
-  param "cred" {
-    type        = string
-    description = local.cred_param_description
-    default     = "default"
+  param "conn" {
+    type        = connection.slack
+    description = local.conn_param_description
+    default     = connection.slack.default
   }
 
   param "channel_to_create" {
@@ -28,7 +28,7 @@ pipeline "test_create_channel" {
     pipeline = pipeline.create_channel
     args = {
       channel    = param.channel_to_create
-      cred       = param.cred
+      conn       = param.conn
       is_private = param.is_private
     }
   }
@@ -38,7 +38,7 @@ pipeline "test_create_channel" {
     pipeline = pipeline.get_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
-      cred    = param.cred
+      conn    = param.conn
     }
 
     # Ignore errors so we can delete
@@ -53,7 +53,7 @@ pipeline "test_create_channel" {
     pipeline = pipeline.archive_channel
     args = {
       channel = step.pipeline.create_channel.output.channel.id
-      cred    = param.cred
+      conn    = param.conn
     }
   }
 
