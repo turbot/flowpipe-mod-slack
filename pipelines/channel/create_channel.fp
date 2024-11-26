@@ -35,7 +35,7 @@ pipeline "create_channel" {
     }
 
     request_body = jsonencode({
-      name       = param.channel
+      name       = param.channel_name
       is_private = param.is_private
     })
 
